@@ -3,6 +3,7 @@
 ###SpringBoot###
 mvnw
 mvnw.cmd
+.mvn
 
 ### STS ###
 .apt_generated
