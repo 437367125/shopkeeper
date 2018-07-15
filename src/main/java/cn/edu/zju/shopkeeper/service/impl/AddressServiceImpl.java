@@ -6,14 +6,15 @@ import cn.edu.zju.shopkeeper.domain.req.AddressReq;
 import cn.edu.zju.shopkeeper.domain.res.BaseRes;
 import cn.edu.zju.shopkeeper.domain.res.ListRes;
 import cn.edu.zju.shopkeeper.domain.res.ObjectRes;
+import cn.edu.zju.shopkeeper.domain.vo.AddressVO;
 import cn.edu.zju.shopkeeper.enums.ResultEnum;
 import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
 import cn.edu.zju.shopkeeper.mapper.AddressMapper;
 import cn.edu.zju.shopkeeper.service.AddressService;
+import cn.edu.zju.shopkeeper.utils.DozerBeanUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,6 @@ import java.util.List;
  */
 @Service
 public class AddressServiceImpl implements AddressService {
-    /**
-     * dozer
-     */
-    DozerBeanMapper mapper = new DozerBeanMapper();
     /**
      * 日志
      */
@@ -55,17 +52,17 @@ public class AddressServiceImpl implements AddressService {
      * @throws ShopkeeperException
      */
     @Override
-    public ListRes<Address> queryAddressList(AddressReq req) throws ShopkeeperException {
+    public ListRes<AddressVO> queryAddressList(AddressReq req) throws ShopkeeperException {
         logger.info("invoke AddressServiceImpl queryAddressList, req:{}", req);
         //参数校验
         if (req.getUserId() == null) {
             logger.error("AddressServiceImpl queryAddressList missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
-        ListRes<Address> res = new ListRes<>();
+        ListRes<AddressVO> res = new ListRes<>();
         try {
             List<Address> list = addressMapper.queryAddressList(req.getUserId());
-            res.setResultList(list);
+            res.setResultList(DozerBeanUtil.mapList(list, AddressVO.class));
             res.setResultCode(ResultEnum.SUCCESS.getCode());
             res.setResultMsg(ResultEnum.SUCCESS.getMsg());
         } catch (Exception e) {
@@ -94,7 +91,7 @@ public class AddressServiceImpl implements AddressService {
         BaseRes res = new BaseRes();
         Date date = new Date();
         try {
-            Address entity = mapper.map(req, Address.class);
+            Address entity = DozerBeanUtil.map(req, Address.class);
             entity.setState(ShopkeeperConstant.VALID);
             entity.setCreateTime(date);
             entity.setModifyTime(date);
@@ -125,16 +122,34 @@ public class AddressServiceImpl implements AddressService {
     public BaseRes deleteAddress(AddressReq req) throws ShopkeeperException {
         logger.info("invoke AddressServiceImpl deleteAddress, req:{}", req);
         //参数校验
-        if (req.getId() == null) {
+        if (req.getId() == null || req.getUserId() == null) {
             logger.error("AddressServiceImpl deleteAddress missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
         BaseRes res = new BaseRes();
         Date date = new Date();
         try {
-            Address entity = mapper.map(req, Address.class);
+            //先删除这个地址
+            Address entity = DozerBeanUtil.map(req, Address.class);
             entity.setModifyTime(date);
             addressMapper.deleteAddress(entity);
+            //获取当前地址列表，如果列表不为空且没有默认地址，则设置一个默认地址
+            List<Address> list = addressMapper.queryAddressList(req.getUserId());
+            if (CollectionUtils.isNotEmpty(list)) {
+                boolean flag = false;
+                for (Address address : list) {
+                    if (ShopkeeperConstant.DEFAULT.equals(address.getType())) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    entity = new Address();
+                    entity.setId(list.get(0).getId());
+                    entity.setModifyTime(date);
+                    addressMapper.setDefaultAddress(entity);
+                }
+            }
             res.setResultCode(ResultEnum.SUCCESS.getCode());
             res.setResultMsg(ResultEnum.SUCCESS.getMsg());
         } catch (Exception e) {
@@ -169,7 +184,7 @@ public class AddressServiceImpl implements AddressService {
             entity.setModifyTime(date);
             addressMapper.clearDefaultAddress(entity);
             //接着设置新的默认地址
-            entity = mapper.map(req, Address.class);
+            entity = DozerBeanUtil.map(req, Address.class);
             entity.setModifyTime(date);
             addressMapper.setDefaultAddress(entity);
             res.setResultCode(ResultEnum.SUCCESS.getCode());
@@ -200,7 +215,7 @@ public class AddressServiceImpl implements AddressService {
         BaseRes res = new BaseRes();
         Date date = new Date();
         try {
-            Address entity = mapper.map(req, Address.class);
+            Address entity = DozerBeanUtil.map(req, Address.class);
             entity.setModifyTime(date);
             addressMapper.updateAddress(entity);
             res.setResultCode(ResultEnum.SUCCESS.getCode());
@@ -220,17 +235,17 @@ public class AddressServiceImpl implements AddressService {
      * @throws ShopkeeperException
      */
     @Override
-    public ObjectRes<Address> getAddress(AddressReq req) throws ShopkeeperException {
+    public ObjectRes<AddressVO> getAddress(AddressReq req) throws ShopkeeperException {
         logger.info("invoke AddressServiceImpl getAddress, req:{}", req);
         //参数校验
         if (req.getId() == null) {
             logger.error("AddressServiceImpl getAddress missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
-        ObjectRes<Address> res = new ObjectRes<>();
+        ObjectRes<AddressVO> res = new ObjectRes<>();
         try {
             Address address = addressMapper.getAddress(req.getId());
-            res.setResultObj(address);
+            res.setResultObj(DozerBeanUtil.map(address, AddressVO.class));
             res.setResultCode(ResultEnum.SUCCESS.getCode());
             res.setResultMsg(ResultEnum.SUCCESS.getMsg());
         } catch (Exception e) {

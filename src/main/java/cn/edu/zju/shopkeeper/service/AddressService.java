@@ -1,10 +1,10 @@
 package cn.edu.zju.shopkeeper.service;
 
-import cn.edu.zju.shopkeeper.domain.Address;
 import cn.edu.zju.shopkeeper.domain.req.AddressReq;
 import cn.edu.zju.shopkeeper.domain.res.BaseRes;
 import cn.edu.zju.shopkeeper.domain.res.ListRes;
 import cn.edu.zju.shopkeeper.domain.res.ObjectRes;
+import cn.edu.zju.shopkeeper.domain.vo.AddressVO;
 import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
 
 /**
@@ -21,7 +21,7 @@ public interface AddressService {
      * @return 地址列表
      * @throws ShopkeeperException
      */
-    ListRes<Address> queryAddressList(AddressReq req) throws ShopkeeperException;
+    ListRes<AddressVO> queryAddressList(AddressReq req) throws ShopkeeperException;
 
     /**
      * 创建新地址
@@ -66,5 +66,5 @@ public interface AddressService {
      * @return 地址详情
      * @throws ShopkeeperException
      */
-    ObjectRes<Address> getAddress(AddressReq req) throws ShopkeeperException;
+    ObjectRes<AddressVO> getAddress(AddressReq req) throws ShopkeeperException;
 }
