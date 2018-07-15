@@ -1,6 +1,5 @@
 package cn.edu.zju.shopkeeper.service.impl;
 
-import cn.edu.zju.shopkeeper.domain.Commodity;
 import cn.edu.zju.shopkeeper.domain.CommodityType;
 import cn.edu.zju.shopkeeper.domain.req.CommodityTypeReq;
 import cn.edu.zju.shopkeeper.domain.res.BaseRes;
@@ -103,7 +102,7 @@ public class CommodityTypeServiceImpl implements CommodityTypeService {
     public BaseRes createCommodityType(CommodityTypeReq req) throws ShopkeeperException {
         logger.info("invoke CommodityTypeServiceImpl createCommodityType, req:{}", req);
         //参数校验
-        if (StringUtils.isBlank(req.getTypeName()) || StringUtils.isBlank(req.getDescription()) ||
+        if (StringUtils.isBlank(req.getTypeName()) ||
                 StringUtils.isBlank(req.getCreater()) || StringUtils.isBlank(req.getModifier())) {
             logger.error("CommodityTypeServiceImpl createCommodityType missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
@@ -167,7 +166,7 @@ public class CommodityTypeServiceImpl implements CommodityTypeService {
         logger.info("invoke CommodityTypeServiceImpl updateCommodityType, req:{}", req);
         //参数校验
         if (req.getId() == null || StringUtils.isBlank(req.getModifier()) ||
-                StringUtils.isBlank(req.getTypeName()) || StringUtils.isBlank(req.getDescription())) {
+                StringUtils.isBlank(req.getTypeName())) {
             logger.error("CommodityTypeServiceImpl updateCommodityType missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
