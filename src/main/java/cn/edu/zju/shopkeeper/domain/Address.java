@@ -12,35 +12,35 @@ public class Address {
     /**
      * 主键
      */
-    Integer id;
+    private Integer id;
     /**
      * 用户主键
      */
-    Integer userId;
+    private Integer userId;
     /**
      * 地址内容
      */
-    String addressDescription;
+    private String addressDescription;
     /**
      * 联系电话
      */
-    Long phoneNumber;
+    private Long phoneNumber;
     /**
      * 状态（0失效，1生效）
      */
-    Integer state;
+    private Integer state;
     /**
      * 地址类型（0非默认地址，1默认地址）
      */
-    Integer type;
+    private Integer type;
     /**
      * 创建时间
      */
-    Date createTime;
+    private Date createTime;
     /**
      * 修改时间
      */
-    Date modifyTime;
+    private Date modifyTime;
 
     public Integer getId() {
         return id;

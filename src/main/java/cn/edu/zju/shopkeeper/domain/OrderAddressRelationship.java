@@ -10,15 +10,15 @@ public class OrderAddressRelationship {
     /**
      * 主键
      */
-    Integer id;
+    private Integer id;
     /**
      * 订单主键
      */
-    Integer orderId;
+    private Integer orderId;
     /**
      * 地址主键
      */
-    Integer addressId;
+    private Integer addressId;
 
     public Integer getId() {
         return id;

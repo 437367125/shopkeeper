@@ -3,8 +3,8 @@ package cn.edu.zju.shopkeeper.domain;
 import java.util.Date;
 
 /**
- * @version V1.0
  * @author Wang Zejie
+ * @version V1.0
  * @date 2018/7/15 上午9:59
  * Description 商品实体类
  */
@@ -12,55 +12,55 @@ public class Commodity {
     /**
      * 主键
      */
-    Integer id;
+    private Integer id;
     /**
      * 商品名
      */
-    String commodityName;
+    private String commodityName;
     /**
      * 商品描述
      */
-    String description;
+    private String description;
     /**
      * 所在位置
      */
-    String location;
+    private String location;
     /**
      * 库存数量
      */
-    Integer inventory;
+    private Integer inventory;
     /**
      * 价格
      */
-    Double price;
+    private Double price;
     /**
      * 图片地址
      */
-    String picture;
+    private String picture;
     /**
      * 商品类型（此处存商品类型表的主键）
      */
-    Integer type;
+    private Integer type;
     /**
      * 商品状态（0失效，1生效）
      */
-    Integer state;
+    private Integer state;
     /**
      * 创建者
      */
-    String creater;
+    private String creater;
     /**
      * 修改者
      */
-    String modifier;
+    private String modifier;
     /**
      * 创建时间
      */
-    Date createTime;
+    private Date createTime;
     /**
      * 修改时间
      */
-    Date modifyTime;
+    private Date modifyTime;
 
     public Integer getId() {
         return id;

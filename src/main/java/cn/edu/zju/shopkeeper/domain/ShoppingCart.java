@@ -12,31 +12,31 @@ public class ShoppingCart {
     /**
      * 主键
      */
-    Integer id;
+    private Integer id;
     /**
      * 用户主键
      */
-    Integer userId;
+    private Integer userId;
     /**
      * 商品主键
      */
-    Integer commodityId;
+    private Integer commodityId;
     /**
      * 商品数量
      */
-    Integer count;
+    private Integer count;
     /**
      * 此商品状态（0失效，1生效）
      */
-    Integer state;
+    private Integer state;
     /**
      * 创建时间
      */
-    Date createTime;
+    private Date createTime;
     /**
      * 修改时间
      */
-    Date modifyTime;
+    private Date modifyTime;
 
     public Integer getId() {
         return id;

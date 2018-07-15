@@ -12,43 +12,43 @@ public class User {
     /**
      * 主键
      */
-    Integer id;
+    private Integer id;
     /**
      * 用户名
      */
-    String username;
+    private String username;
     /**
      * 手机号
      */
-    Long phoneNumber;
+    private Long phoneNumber;
     /**
      * 电子邮箱
      */
-    String email;
+    private String email;
     /**
      * 用户昵称
      */
-    String nickname;
+    private String nickname;
     /**
      * 密码
      */
-    String password;
+    private String password;
     /**
      * 用户类别（0卖家，1买家）
      */
-    Integer type;
+    private Integer type;
     /**
      * 状态（0失效，1生效）
      */
-    Integer state;
+    private Integer state;
     /**
      * 创建时间
      */
-    Date createTime;
+    private Date createTime;
     /**
      * 修改时间
      */
-    Date modifyTime;
+    private Date modifyTime;
 
     public Integer getId() {
         return id;

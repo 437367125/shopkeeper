@@ -10,19 +10,19 @@ public class OrderCommodityRelationship {
     /**
      * 主键
      */
-    Integer id;
+    private Integer id;
     /**
      * 订单主键
      */
-    Integer orderId;
+    private Integer orderId;
     /**
      * 商品主键
      */
-    Integer commodityId;
+    private Integer commodityId;
     /**
      * 商品数量
      */
-    Integer count;
+    private Integer count;
 
     public Integer getId() {
         return id;

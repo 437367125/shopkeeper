@@ -3,8 +3,8 @@ package cn.edu.zju.shopkeeper.domain;
 import java.util.Date;
 
 /**
- * @version V1.0
  * @author Wang Zejie
+ * @version V1.0
  * @date 2018/7/15 上午10:20
  * Description 订单实体类
  */
@@ -12,51 +12,51 @@ public class UserOrder {
     /**
      * 主键
      */
-    Integer id;
+    private Integer id;
     /**
      * 用户主键
      */
-    Integer userId;
+    private Integer userId;
     /**
      * 订单号
      */
-    Long orderNumber;
+    private Long orderNumber;
     /**
      * 商品总数
      */
-    Integer totalNum;
+    private Integer totalNum;
     /**
      * 订单总额
      */
-    Double totalPrice;
+    private Double totalPrice;
     /**
      * 订单类别（0为无需配送，1为需要配送）
      */
-    Integer type;
+    private Integer type;
     /**
      * 状态（是否被用户删除，0失效，1生效）
      */
-    Integer state;
+    private Integer state;
     /**
      * 订单所处状态（0为待付款，1为已付款，2为待发货，3为已发货，4为已取消，5为已完成）
      */
-    Integer status;
+    private Integer status;
     /**
      * 订单创建时间
      */
-    Date createTime;
+    private Date createTime;
     /**
      * 付款时间
      */
-    Date payTime;
+    private Date payTime;
     /**
      * 发货时间（无需配送则为空）
      */
-    Date deliveryTime;
+    private Date deliveryTime;
     /**
      * 完成时间（无需配送则这个时间与付款时间相同）
      */
-    Date completeTime;
+    private Date completeTime;
 
     public Integer getId() {
         return id;

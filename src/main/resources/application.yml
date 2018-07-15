@@ -4,5 +4,5 @@ spring:
     username: root
     password: 123456
 mybatis:
-  type-aliases-package: cn.edu.zju.shopkeeper
+  type-aliases-package: cn.edu.zju.shopkeeper.domain
   config-location: classpath:mybatis.xml

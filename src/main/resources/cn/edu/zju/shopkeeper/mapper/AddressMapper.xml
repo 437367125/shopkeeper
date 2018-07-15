@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zju.shopkeeper.mapper.AddressMapper">
+    <select id="queryAddressList" resultType="Address">
+        SELECT *
+        FROM address
+        WHERE user_id = #{userId}
+              AND state = 1
+    </select>
+    <insert id="createAddress" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO address
+        (user_id, address_description, phone_number, state, type, create_time, modify_time)
+        VALUES (#{userId}, #{addressDescription}, #{phoneNumber}, #{state}, #{type}, #{createTime}, #{modifyTime})
+    </insert>
+    <update id="deleteAddress" parameterType="Address">
+        UPDATE address
+        SET state       = 0,
+            modify_time = #{modifyTime}
+        WHERE id = #{id}
+    </update>
+    <update id="clearDefaultAddress" parameterType="Address">
+        UPDATE address
+        SET type        = 0,
+            modify_time = #{modifyTime}
+        WHERE user_id = #{userId}
+              AND state = 1
+    </update>
+    <update id="setDefaultAddress" parameterType="Integer">
+        UPDATE address
+        SET type = 1
+        WHERE id = #{id}
+    </update>
+    <update id="updateAddress" parameterType="Address">
+        UPDATE address
+        SET address_description = #{addressDescription},
+            phone_number        = #{phoneNumber},
+            modify_time         = #{modifyTime}
+        WHERE id = #{id}
+    </update>
+    <select id="getAddress" resultType="Address">
+        SELECT *
+        FROM address
+        WHERE id = #{id}
+    </select>
+</mapper>

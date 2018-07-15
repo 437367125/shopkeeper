@@ -12,35 +12,35 @@ public class CommodityType {
     /**
      * 主键
      */
-    Integer id;
+    private Integer id;
     /**
      * 类型名
      */
-    String typeName;
+    private String typeName;
     /**
      * 类型描述
      */
-    String description;
+    private String description;
     /**
      * 状态（0失效，1生效）
      */
-    Integer state;
+    private Integer state;
     /**
      * 创建者
      */
-    String creater;
+    private String creater;
     /**
      * 修改者
      */
-    String modifier;
+    private String modifier;
     /**
      * 创建时间
      */
-    Date createTime;
+    private Date createTime;
     /**
      * 修改时间
      */
-    Date modifyTime;
+    private Date modifyTime;
 
     public Integer getId() {
         return id;
