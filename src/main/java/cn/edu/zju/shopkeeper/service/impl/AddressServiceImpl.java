@@ -119,6 +119,7 @@ public class AddressServiceImpl implements AddressService {
      * @throws ShopkeeperException
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public BaseRes deleteAddress(AddressReq req) throws ShopkeeperException {
         logger.info("invoke AddressServiceImpl deleteAddress, req:{}", req);
         //参数校验
