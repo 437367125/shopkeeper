@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zju.shopkeeper.mapper.UserMapper">
+    <insert id="createUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user
+        (username, phone_number, nickname, password, type, state, create_time, modify_time)
+        VALUES (#{username}, #{phoneNumber}, #{nickname}, #{password}, #{type}, #{state}, #{createTime}, #{modifyTime})
+    </insert>
+    <update id="updateUser" parameterType="User">
+        UPDATE user
+        SET phone_number = #{phoneNumber},
+            email        = #{email},
+            nickname     = #{nickname},
+            modify_time  = #{modifyTime}
+        WHERE id = #{id}
+    </update>
+    <update id="updatePassword" parameterType="User">
+        UPDATE user
+        SET password = #{password}
+        WHERE id = #{id}
+    </update>
+    <select id="getUserById" resultType="User">
+        SELECT *
+        FROM user
+        WHERE id = #{id}
+              AND state = 1
+    </select>
+    <select id="getUserByPhone" resultType="User">
+        SELECT *
+        FROM user
+        WHERE phone_number = #{phoneNumber}
+              AND state = 1
+    </select>
+    <select id="getUserByUsername" resultType="User">
+        SELECT *
+        FROM user
+        WHERE username = #{username}
+              AND state = 1
+    </select>
+    <select id="getUserByEmail" resultType="User">
+        SELECT *
+        FROM user
+        WHERE email = #{email}
+              AND state = 1
+    </select>
+</mapper>

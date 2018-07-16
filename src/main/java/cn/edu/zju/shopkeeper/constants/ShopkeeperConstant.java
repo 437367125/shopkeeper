@@ -44,7 +44,23 @@ public class ShopkeeperConstant {
      */
     public static final Integer NOT_DEFAULT = 0;
     /**
-     * 地质类型：默认
+     * 地址类型：默认
      */
     public static final Integer DEFAULT = 1;
+    /**
+     * 登录方式：用户名登录
+     */
+    public static final Integer USERNAME_LOGIN = 0;
+    /**
+     * 登录方式：手机号登录
+     */
+    public static final Integer PHONE_LOGIN = 1;
+    /**
+     * 用户类型：卖家
+     */
+    public static final Integer SELLER = 0;
+    /**
+     * 用户类型：买家
+     */
+    public static final Integer BUYER = 1;
 }
