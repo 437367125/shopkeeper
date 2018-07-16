@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zju.shopkeeper.mapper.BankcardMapper">
+    <insert id="createBankcard" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO bankcard
+        (user_id, bankcard_number, bank_name, balance, state, create_time, modify_time)
+        VALUES (#{userId}, #{bankcardNumber}, #{bankName}, #{balance}, #{state}, #{createTime}, #{modifyTime})
+    </insert>
+    <update id="deleteBankcard" parameterType="Bankcard">
+        UPDATE bankcard
+        SET state       = 0,
+            modify_time = #{modifyTime}
+        WHERE id = #{id}
+    </update>
+    <update id="updateBalance" parameterType="Bankcard">
+        UPDATE bankcard
+        SET balance     = #{balance},
+            modify_time = #{modifyTime}
+        WHERE id = #{id}
+    </update>
+    <select id="queryBankcardList" resultType="Bankcard">
+        SELECT *
+        FROM bankcard
+        WHERE user_id = #{userId}
+              AND state = 1
+    </select>
+    <select id="getBankcardById" resultType="Bankcard">
+        SELECT *
+        FROM bankcard
+        WHERE id = #{id}
+              AND state = 1
+    </select>
+</mapper>
