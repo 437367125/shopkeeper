@@ -27,5 +27,3 @@ mvnw.cmd
 /dist/
 /nbdist/
 /.nb-gradle/
-!/src/main/java/cn/edu/zju/shopkeeper/domain/ShoppingCart.java
-src/main/java/cn/edu/zju/shopkeeper/controller/

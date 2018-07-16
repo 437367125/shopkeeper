@@ -29,4 +29,25 @@ public interface CommodityMapper {
      * @return
      */
     List<Commodity> queryCommodityListByType(Commodity commodity);
+
+    /**
+     * 创建新商品
+     *
+     * @param commodity
+     */
+    void createCommodity(Commodity commodity);
+
+    /**
+     * 删除商品（设置为禁用）
+     *
+     * @param commodity
+     */
+    void deleteCommodity(Commodity commodity);
+
+    /**
+     * 更新商品详情
+     *
+     * @param commodity
+     */
+    void updateCommodity(Commodity commodity);
 }

@@ -11,8 +11,35 @@
         SELECT *
         FROM commodity
         WHERE type = #{type}
+              AND id != #{id}
               AND state = 1
         ORDER BY RAND()
         LIMIT 3
     </select>
+    <insert id="createCommodity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO commodity
+        (commodity_name, description, location, inventory, price, picture, type, state, creater, modifier, create_time, modify_time)
+        VALUES (#{commodityName}, #{description}, #{location}, #{inventory}, #{price}, #{picture}, #{type}, #{state},
+                                  #{creater}, #{modifier}, #{createTime}, #{modifyTime})
+    </insert>
+    <update id="deleteCommodity" parameterType="Commodity">
+        UPDATE commodity
+        SET state       = 0,
+            modifier    = #{modifier},
+            modify_time = #{modifyTime}
+        WHERE id = #{id}
+    </update>
+    <update id="updateCommodity" parameterType="Commodity">
+        UPDATE commodity
+        SET commodity_name = #{commodityName},
+            description    = #{description},
+            location       = #{location},
+            inventory      = #{inventory},
+            price          = #{price},
+            picture        = #{picture},
+            type           = #{type},
+            modifier       = #{modifier},
+            modify_time    = #{modifyTime}
+        WHERE id = #{id}
+    </update>
 </mapper>
