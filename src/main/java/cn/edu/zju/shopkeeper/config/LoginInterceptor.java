@@ -18,11 +18,11 @@ import java.lang.reflect.Method;
 /**
  * @author Wang Zejie
  * @version V1.0
- * @date 2018/7/17 下午1:38
- * Description 买家登录拦截器
+ * @date 2018/7/17 下午3:43
+ * Description 登录拦截器
  */
 @Component
-public class BuyerLoginInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
     @Autowired
     private TokenVerifierUtil tokenVerifierUtil;
 
@@ -42,10 +42,6 @@ public class BuyerLoginInterceptor implements HandlerInterceptor {
             // 从 http 请求头中取出 token
             String token = request.getHeader("token");
             UserVO user = tokenVerifierUtil.verify(token);
-            //验证用户类型是否为买家
-            if (!ShopkeeperConstant.BUYER.equals(user.getType())) {
-                throw new ShopkeeperException(ResultEnum.USER_TYPE_ERROR);
-            }
             // 验证 token
             tokenVerifierUtil.verifyPassword(token, user);
             request.setAttribute("user", user);

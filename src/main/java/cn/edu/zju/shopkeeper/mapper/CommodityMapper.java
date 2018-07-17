@@ -57,4 +57,12 @@ public interface CommodityMapper {
      * @param commodity
      */
     void updateInventory(Commodity commodity);
+
+    /**
+     * 根据商品名模糊查询商品
+     *
+     * @param commodity
+     * @return
+     */
+    List<Commodity> queryCommodityList(Commodity commodity);
 }

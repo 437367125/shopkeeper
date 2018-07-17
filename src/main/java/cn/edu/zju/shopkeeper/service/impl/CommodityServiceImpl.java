@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.EmptyStackException;
 import java.util.List;
 
 /**
@@ -107,7 +108,7 @@ public class CommodityServiceImpl implements CommodityService {
      * @throws ShopkeeperException
      */
     @Override
-    public BaseRes createCommodity(CommodityReq req) throws ShopkeeperException {
+    public ObjectRes<Integer> createCommodity(CommodityReq req) throws ShopkeeperException {
         logger.info("invoke CommodityServiceImpl createCommodity, req:{}", req);
         //参数校验
         if (StringUtils.isBlank(req.getCommodityName()) || StringUtils.isBlank(req.getDescription()) ||
@@ -118,7 +119,7 @@ public class CommodityServiceImpl implements CommodityService {
             logger.error("CommodityServiceImpl createCommodity missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
-        BaseRes res = new BaseRes();
+        ObjectRes<Integer> res = new ObjectRes<>();
         Date date = new Date();
         try {
             Commodity entity = DozerBeanUtil.map(req, Commodity.class);
@@ -128,6 +129,7 @@ public class CommodityServiceImpl implements CommodityService {
             commodityMapper.createCommodity(entity);
             res.setResultCode(ResultEnum.SUCCESS.getCode());
             res.setResultMsg(ResultEnum.SUCCESS.getMsg());
+            res.setResultObj(entity.getId());
         } catch (Exception e) {
             logger.error("CommodityServiceImpl createCommodity error:{}", ExceptionUtils.getStackTrace(e));
             throw new ShopkeeperException(ResultEnum.DATA_INSERT_FAIL);
@@ -195,6 +197,34 @@ public class CommodityServiceImpl implements CommodityService {
         } catch (Exception e) {
             logger.error("CommodityServiceImpl updateCommodity error:{}", ExceptionUtils.getStackTrace(e));
             throw new ShopkeeperException(ResultEnum.DATA_UPDATE_FAIL);
+        }
+        return res;
+    }
+
+    /**
+     * 根据商品名模糊查询商品列表
+     *
+     * @param req
+     * @return
+     * @throws ShopkeeperException
+     */
+    @Override
+    public ListRes<CommodityVO> queryCommodityList(CommodityReq req) throws ShopkeeperException {
+        logger.info("invoke CommodityServiceImpl queryCommodityList, req:{}", req);
+        //参数校验
+        if (StringUtils.isBlank(req.getCommodityName())) {
+            logger.error("CommodityServiceImpl queryCommodityList missing param, req:{}", req);
+            throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
+        }
+        ListRes<CommodityVO> res = new ListRes<>();
+        try {
+            List<Commodity> list = commodityMapper.queryCommodityList(DozerBeanUtil.map(req, Commodity.class));
+            res.setResultList(DozerBeanUtil.mapList(list, CommodityVO.class));
+            res.setResultCode(ResultEnum.SUCCESS.getCode());
+            res.setResultMsg(ResultEnum.SUCCESS.getMsg());
+        } catch (Exception e) {
+            logger.error("CommodityServiceImpl queryCommodityList error:{}", ExceptionUtils.getStackTrace(e));
+            throw new ShopkeeperException(ResultEnum.DATA_QUERY_FAIL);
         }
         return res;
     }

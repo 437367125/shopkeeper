@@ -39,7 +39,7 @@ public interface CommodityService {
      * @return
      * @throws ShopkeeperException
      */
-    BaseRes createCommodity(CommodityReq req) throws ShopkeeperException;
+    ObjectRes<Integer> createCommodity(CommodityReq req) throws ShopkeeperException;
 
     /**
      * 删除商品（设置为无效）
@@ -58,4 +58,13 @@ public interface CommodityService {
      * @throws ShopkeeperException
      */
     BaseRes updateCommodity(CommodityReq req) throws ShopkeeperException;
+
+    /**
+     * 根据商品名模糊查询商品列表
+     *
+     * @param req
+     * @return
+     * @throws ShopkeeperException
+     */
+    ListRes<CommodityVO> queryCommodityList(CommodityReq req) throws ShopkeeperException;
 }

@@ -95,5 +95,16 @@ public class ShopkeeperConstant {
      * 银行卡列表
      */
     public static final String BANKCARD_LIST = "bankcardList";
-
+    /**
+     * 商品主键
+     */
+    public static final String COMMODITY_ID = "commodityId";
+    /**
+     * 商品列表
+     */
+    public static final String COMMODITY_LIST = "commodityList";
+    /**
+     * 商品详情
+     */
+    public static final String COMMODITY_INFO = "commodityInfo";
 }

@@ -18,6 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sellerLoginInterceptor()).addPathPatterns("/**");
         registry.addInterceptor(buyerLoginInteceptor()).addPathPatterns("/**");
+        registry.addInterceptor(loginInterceptor()).addPathPatterns("/**");
     }
 
     @Bean
@@ -29,7 +30,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public BuyerLoginInterceptor buyerLoginInteceptor() {
         return new BuyerLoginInterceptor();
     }
-//    @Override
+
+    @Bean
+    public LoginInterceptor loginInterceptor() {
+        return new LoginInterceptor();
+    }
+
+    //    @Override
 //    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 //        converters.add(fastJsonHttpMessageConverterEx());
 //    }

@@ -52,7 +52,7 @@ public class AddressController extends BaseController {
         ListRes<AddressVO> res = new ListRes<>();
         AddressReq req = new AddressReq();
         try {
-            req.setUserId(getUser(token));
+            req.setUserId(getUser(token).getId());
             res = addressService.queryAddressList(req);
         } catch (ShopkeeperException e) {
             logger.error("AddressController getAddressList error:{}", ExceptionUtils.getStackTrace(e));
@@ -83,7 +83,7 @@ public class AddressController extends BaseController {
         //解析手机号
         try {
             req.setPhoneNumber(Long.parseLong(phoneNumber));
-            req.setUserId(getUser(token));
+            req.setUserId(getUser(token).getId());
             res = addressService.createAddress(req);
         } catch (ShopkeeperException e) {
             logger.error("AddressController createAddress error:{}", ExceptionUtils.getStackTrace(e));
@@ -118,7 +118,7 @@ public class AddressController extends BaseController {
         req.setAddressDescription(addressDescription);
         req.setId(addressId);
         try {
-            req.setUserId(getUser(token));
+            req.setUserId(getUser(token).getId());
             req.setPhoneNumber(Long.parseLong(phoneNumber));
             res = addressService.updateAddress(req);
         } catch (ShopkeeperException e) {
@@ -149,7 +149,7 @@ public class AddressController extends BaseController {
         AddressReq req = new AddressReq();
         req.setId(addressId);
         try {
-            req.setUserId(getUser(token));
+            req.setUserId(getUser(token).getId());
             res = addressService.deleteAddress(req);
         } catch (ShopkeeperException e) {
             logger.error("AddressController deleteAddress error:{}", ExceptionUtils.getStackTrace(e));
@@ -175,7 +175,7 @@ public class AddressController extends BaseController {
         AddressReq req = new AddressReq();
         req.setId(addressId);
         try {
-            req.setUserId(getUser(token));
+            req.setUserId(getUser(token).getId());
             res = addressService.updateDefaultAddress(req);
         } catch (ShopkeeperException e) {
             logger.error("AddressController updateDefaultAddress error:{}", ExceptionUtils.getStackTrace(e));
@@ -201,7 +201,7 @@ public class AddressController extends BaseController {
         AddressReq req = new AddressReq();
         req.setId(addressId);
         try {
-            req.setUserId(getUser(token));
+            req.setUserId(getUser(token).getId());
             res = addressService.getAddress(req);
         } catch (ShopkeeperException e) {
             logger.error("AddressController getAddressInfo error:{}", ExceptionUtils.getStackTrace(e));

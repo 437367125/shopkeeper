@@ -53,7 +53,7 @@ public class BankcardController extends BaseController {
         ListRes<BankcardVO> res = new ListRes<>();
         BankcardReq req = new BankcardReq();
         try {
-            req.setUserId(getUser(token));
+            req.setUserId(getUser(token).getId());
             res = bankcardService.queryBankcardList(req);
         } catch (ShopkeeperException e) {
             logger.error("BankcardController getBankcardList error:{}", ExceptionUtils.getStackTrace(e));
@@ -85,7 +85,7 @@ public class BankcardController extends BaseController {
         req.setBalance(balance);
         req.setBankName(bankName);
         try {
-            req.setUserId(getUser(token));
+            req.setUserId(getUser(token).getId());
             req.setBankcardNumber(Long.parseLong(bankcardNumber));
             res = bankcardService.createBankcard(req);
         } catch (ShopkeeperException e) {
@@ -116,7 +116,7 @@ public class BankcardController extends BaseController {
         BankcardReq req = new BankcardReq();
         req.setId(bankcardId);
         try {
-            req.setUserId(getUser(token));
+            req.setUserId(getUser(token).getId());
             res = bankcardService.deleteBankcard(req);
         } catch (ShopkeeperException e) {
             logger.error("BankcardController deleteBankcard error:{}", ExceptionUtils.getStackTrace(e));

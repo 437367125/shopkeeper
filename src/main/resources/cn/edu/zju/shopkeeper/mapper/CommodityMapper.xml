@@ -48,4 +48,10 @@
             modify_time = #{modifyTime}
         WHERE id = #{id}
     </update>
+    <select id="queryCommodityList" resultType="Commodity">
+        SELECT *
+        FROM commodity
+        WHERE commodity_name LIKE '%${commodityName}%'
+              AND state = 1
+    </select>
 </mapper>
