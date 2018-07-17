@@ -42,4 +42,10 @@
             modify_time    = #{modifyTime}
         WHERE id = #{id}
     </update>
+    <update id="updateInventory" parameterType="Commodity">
+        UPDATE commodity
+        SET inventory   = #{inventory},
+            modify_time = #{modifyTime}
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -63,4 +63,12 @@ public class ShopkeeperConstant {
      * 用户类型：买家
      */
     public static final Integer BUYER = 1;
+    /**
+     * 订单类别：无需配送
+     */
+    public static final Integer NOT_NEED_DELIVERY = 0;
+    /**
+     * 订单类别：需要配送
+     */
+    public static final Integer NEED_DELIVERY = 1;
 }

@@ -1,14 +1,12 @@
 package cn.edu.zju.shopkeeper.domain.vo;
 
-import java.util.Date;
-
 /**
  * @author Wang Zejie
  * @version V1.0
- * @date 2018/7/15 下午7:48
- * Description 商品VO
+ * @date 2018/7/16 上午11:19
+ * Description 订单-商品VO
  */
-public class CommodityVO {
+public class OrderCommodityRelationshipVO {
     /**
      * 主键
      */
@@ -18,17 +16,9 @@ public class CommodityVO {
      */
     private String commodityName;
     /**
-     * 商品描述
-     */
-    private String description;
-    /**
      * 所在位置
      */
     private String location;
-    /**
-     * 库存数量
-     */
-    private Integer inventory;
     /**
      * 价格
      */
@@ -41,14 +31,6 @@ public class CommodityVO {
      * 商品类型（此处存商品类型表的主键）
      */
     private Integer type;
-    /**
-     * 修改者
-     */
-    private String modifier;
-    /**
-     * 修改时间
-     */
-    private Date modifyTime;
     /**
      * 购买数量
      */
@@ -70,28 +52,12 @@ public class CommodityVO {
         this.commodityName = commodityName;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLocation() {
         return location;
     }
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public Integer getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Integer inventory) {
-        this.inventory = inventory;
     }
 
     public Double getPrice() {
@@ -118,22 +84,6 @@ public class CommodityVO {
         this.type = type;
     }
 
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
     public Integer getCount() {
         return count;
     }
@@ -144,17 +94,13 @@ public class CommodityVO {
 
     @Override
     public String toString() {
-        return "CommodityVO{" +
+        return "OrderCommodityRelationshipVO{" +
                 "id=" + id +
                 ", commodityName='" + commodityName + '\'' +
-                ", description='" + description + '\'' +
                 ", location='" + location + '\'' +
-                ", inventory=" + inventory +
                 ", price=" + price +
                 ", picture='" + picture + '\'' +
                 ", type=" + type +
-                ", modifier='" + modifier + '\'' +
-                ", modifyTime=" + modifyTime +
                 ", count=" + count +
                 '}';
     }

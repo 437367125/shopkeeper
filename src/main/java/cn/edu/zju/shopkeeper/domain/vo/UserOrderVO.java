@@ -1,22 +1,21 @@
-package cn.edu.zju.shopkeeper.domain;
+package cn.edu.zju.shopkeeper.domain.vo;
+
+import cn.edu.zju.shopkeeper.domain.Address;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Wang Zejie
  * @version V1.0
- * @date 2018/7/15 上午10:20
- * Description 订单实体类
+ * @date 2018/7/16 上午11:16
+ * Description 用户订单VO
  */
-public class UserOrder {
+public class UserOrderVO {
     /**
      * 主键
      */
     private Integer id;
-    /**
-     * 用户主键
-     */
-    private Integer userId;
     /**
      * 订单号
      */
@@ -30,7 +29,7 @@ public class UserOrder {
      */
     private Double totalPrice;
     /**
-     * 用于付款的银行卡主键
+     * 用于付款的银行主键
      */
     private Integer bankcardId;
     /**
@@ -41,10 +40,6 @@ public class UserOrder {
      * 配送地址（无需配送则为空）
      */
     private Integer addressId;
-    /**
-     * 状态（是否被用户删除，0失效，1生效）
-     */
-    private Integer state;
     /**
      * 订单所处状态（0为待付款，1为已付款，2为待发货，3为已发货，4为已取消，5为已完成）
      */
@@ -65,6 +60,14 @@ public class UserOrder {
      * 完成时间（无需配送则这个时间与付款时间相同）
      */
     private Date completeTime;
+    /**
+     * 订单商品列表
+     */
+    private List<CommodityVO> commodityList;
+    /**
+     * 配送地址
+     */
+    private Address address;
 
     public Integer getId() {
         return id;
@@ -72,14 +75,6 @@ public class UserOrder {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public Long getOrderNumber() {
@@ -98,24 +93,8 @@ public class UserOrder {
         this.totalNum = totalNum;
     }
 
-    public Integer getBankcardId() {
-        return bankcardId;
-    }
-
-    public void setBankcardId(Integer bankcardId) {
-        this.bankcardId = bankcardId;
-    }
-
     public Double getTotalPrice() {
         return totalPrice;
-    }
-
-    public Integer getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(Integer addressId) {
-        this.addressId = addressId;
     }
 
     public void setTotalPrice(Double totalPrice) {
@@ -130,12 +109,20 @@ public class UserOrder {
         this.type = type;
     }
 
-    public Integer getState() {
-        return state;
+    public Integer getBankcardId() {
+        return bankcardId;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setBankcardId(Integer bankcardId) {
+        this.bankcardId = bankcardId;
+    }
+
+    public Integer getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
     }
 
     public Integer getStatus() {
@@ -178,23 +165,39 @@ public class UserOrder {
         this.completeTime = completeTime;
     }
 
+    public List<CommodityVO> getCommodityList() {
+        return commodityList;
+    }
+
+    public void setCommodityList(List<CommodityVO> commodityList) {
+        this.commodityList = commodityList;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
-        return "UserOrder{" +
+        return "UserOrderVO{" +
                 "id=" + id +
-                ", userId=" + userId +
                 ", orderNumber=" + orderNumber +
                 ", totalNum=" + totalNum +
                 ", totalPrice=" + totalPrice +
                 ", bankcardId=" + bankcardId +
                 ", type=" + type +
                 ", addressId=" + addressId +
-                ", state=" + state +
                 ", status=" + status +
                 ", createTime=" + createTime +
                 ", payTime=" + payTime +
                 ", deliveryTime=" + deliveryTime +
                 ", completeTime=" + completeTime +
+                ", commodityList=" + commodityList +
+                ", address=" + address +
                 '}';
     }
 }

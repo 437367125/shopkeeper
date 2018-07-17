@@ -17,7 +17,9 @@ public enum ResultEnum {
     PHONE_NUMBER_EXIST("0007", "该手机已被使用"),
     EMAIL_EXIST("0008", "该邮箱已被使用"),
     PASSWORD_ERROR("0009", "密码错误"),
-
+    PAY_FAIL("0010", "支付失败"),
+    INSUFFICIENT_BALANCE("0011", "该银行卡余额不足"),
+    INVENTORY_SHORTAGE("0012", "该商品库存不足"),
     SYSTEM_ERROR("9999", "系统异常");
     /**
      * 代码

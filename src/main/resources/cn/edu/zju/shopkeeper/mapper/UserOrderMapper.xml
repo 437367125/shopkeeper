@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zju.shopkeeper.mapper.UserOrderMapper">
+    <insert id="createOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_order
+        (user_id, order_number, total_num, total_price, bankcard_id, type, address_id, state, status,
+         create_time, pay_time, delivery_time, complete_time)
+        VALUES (#{userId}, #{orderNumber}, #{totalNum}, #{totalPrice}, #{bankcardId}, #{type}, #{addressId}, #{state},
+                           #{status},
+                           #{createTime}, #{payTime}, #{deliveryTime}, #{completeTime})
+    </insert>
+    <update id="deleteOrder" parameterType="Integer">
+        UPDATE user_order
+        SET state = 0
+        WHERE id = #{id}
+    </update>
+    <update id="updateDelivery" parameterType="UserOrder">
+        UPDATE user_order
+        SET status        = #{status},
+            delivery_time = #{deliveryTime}
+        WHERE id = #{id}
+    </update>
+    <update id="updateComplete" parameterType="UserOrder">
+        UPDATE user_order
+        SET status        = #{status},
+            complete_time = #{completeTime}
+        WHERE id = #{id}
+    </update>
+    <select id="queryUserOrderList" resultType="UserOrder">
+        SELECT *
+        FROM user_order
+        WHERE user_id = #{userId}
+              AND state = 1
+    </select>
+    <select id="getUserOrderById" resultType="UserOrder">
+        SELECT *
+        FROM user_order
+        WHERE id = #{id}
+              AND state = 1
+    </select>
+</mapper>

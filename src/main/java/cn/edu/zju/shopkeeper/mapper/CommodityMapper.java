@@ -50,4 +50,11 @@ public interface CommodityMapper {
      * @param commodity
      */
     void updateCommodity(Commodity commodity);
+
+    /**
+     * 更新商品库存
+     *
+     * @param commodity
+     */
+    void updateInventory(Commodity commodity);
 }

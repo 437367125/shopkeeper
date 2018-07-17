@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zju.shopkeeper.mapper.OrderCommodityRelationshipMapper">
+    <insert id="createOrderCommodityRelationship" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO order_commodity_relationship
+        (order_id, commodity_id, count)
+        VALUES (#{orderId}, #{commodityId}, #{count})
+    </insert>
+    <select id="queryOrderCommodityRelationshipList" resultType="OrderCommodityRelationship">
+        SELECT *
+        FROM order_commodity_relationship
+        WHERE order_id = #{orderId}
+    </select>
+</mapper>

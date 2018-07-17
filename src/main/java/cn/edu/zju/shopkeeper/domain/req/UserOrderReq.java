@@ -1,14 +1,14 @@
-package cn.edu.zju.shopkeeper.domain;
+package cn.edu.zju.shopkeeper.domain.req;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * @author Wang Zejie
  * @version V1.0
- * @date 2018/7/15 上午10:20
- * Description 订单实体类
+ * @date 2018/7/16 上午11:01
+ * Description 用户订单请求类
  */
-public class UserOrder {
+public class UserOrderReq {
     /**
      * 主键
      */
@@ -38,33 +38,17 @@ public class UserOrder {
      */
     private Integer type;
     /**
-     * 配送地址（无需配送则为空）
+     * 配送地址
      */
     private Integer addressId;
-    /**
-     * 状态（是否被用户删除，0失效，1生效）
-     */
-    private Integer state;
     /**
      * 订单所处状态（0为待付款，1为已付款，2为待发货，3为已发货，4为已取消，5为已完成）
      */
     private Integer status;
     /**
-     * 订单创建时间
+     * 订单的商品列表
      */
-    private Date createTime;
-    /**
-     * 付款时间
-     */
-    private Date payTime;
-    /**
-     * 发货时间（无需配送则为空）
-     */
-    private Date deliveryTime;
-    /**
-     * 完成时间（无需配送则这个时间与付款时间相同）
-     */
-    private Date completeTime;
+    private List<OrderCommodityRelationshipReq> commodityList;
 
     public Integer getId() {
         return id;
@@ -76,6 +60,14 @@ public class UserOrder {
 
     public Integer getUserId() {
         return userId;
+    }
+
+    public Integer getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
     }
 
     public void setUserId(Integer userId) {
@@ -110,14 +102,6 @@ public class UserOrder {
         return totalPrice;
     }
 
-    public Integer getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(Integer addressId) {
-        this.addressId = addressId;
-    }
-
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
@@ -130,14 +114,6 @@ public class UserOrder {
         this.type = type;
     }
 
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -146,41 +122,17 @@ public class UserOrder {
         this.status = status;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public List<OrderCommodityRelationshipReq> getCommodityList() {
+        return commodityList;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getPayTime() {
-        return payTime;
-    }
-
-    public void setPayTime(Date payTime) {
-        this.payTime = payTime;
-    }
-
-    public Date getDeliveryTime() {
-        return deliveryTime;
-    }
-
-    public void setDeliveryTime(Date deliveryTime) {
-        this.deliveryTime = deliveryTime;
-    }
-
-    public Date getCompleteTime() {
-        return completeTime;
-    }
-
-    public void setCompleteTime(Date completeTime) {
-        this.completeTime = completeTime;
+    public void setCommodityList(List<OrderCommodityRelationshipReq> commodityList) {
+        this.commodityList = commodityList;
     }
 
     @Override
     public String toString() {
-        return "UserOrder{" +
+        return "UserOrderReq{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", orderNumber=" + orderNumber +
@@ -189,12 +141,8 @@ public class UserOrder {
                 ", bankcardId=" + bankcardId +
                 ", type=" + type +
                 ", addressId=" + addressId +
-                ", state=" + state +
                 ", status=" + status +
-                ", createTime=" + createTime +
-                ", payTime=" + payTime +
-                ", deliveryTime=" + deliveryTime +
-                ", completeTime=" + completeTime +
+                ", commodityList=" + commodityList +
                 '}';
     }
 }
