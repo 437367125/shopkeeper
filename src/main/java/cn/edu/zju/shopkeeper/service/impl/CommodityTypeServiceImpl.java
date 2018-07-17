@@ -1,5 +1,6 @@
 package cn.edu.zju.shopkeeper.service.impl;
 
+import cn.edu.zju.shopkeeper.domain.Commodity;
 import cn.edu.zju.shopkeeper.domain.CommodityType;
 import cn.edu.zju.shopkeeper.domain.req.CommodityTypeReq;
 import cn.edu.zju.shopkeeper.domain.res.BaseRes;
@@ -8,9 +9,11 @@ import cn.edu.zju.shopkeeper.domain.res.ObjectRes;
 import cn.edu.zju.shopkeeper.domain.vo.CommodityTypeVO;
 import cn.edu.zju.shopkeeper.enums.ResultEnum;
 import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
+import cn.edu.zju.shopkeeper.mapper.CommodityMapper;
 import cn.edu.zju.shopkeeper.mapper.CommodityTypeMapper;
 import cn.edu.zju.shopkeeper.service.CommodityTypeService;
 import cn.edu.zju.shopkeeper.utils.DozerBeanUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -35,11 +38,14 @@ public class CommodityTypeServiceImpl implements CommodityTypeService {
     private Logger logger = LoggerFactory.getLogger(CommodityTypeServiceImpl.class);
 
     private CommodityTypeMapper commodityTypeMapper;
+    private CommodityMapper commodityMapper;
 
     @Autowired
-    public CommodityTypeServiceImpl(CommodityTypeMapper commodityTypeMapper) {
+    public CommodityTypeServiceImpl(CommodityTypeMapper commodityTypeMapper, CommodityMapper commodityMapper) {
         this.commodityTypeMapper = commodityTypeMapper;
+        this.commodityMapper = commodityMapper;
     }
+
 
     /**
      * 根据商品类型主键获取该类型的详情
@@ -142,6 +148,16 @@ public class CommodityTypeServiceImpl implements CommodityTypeService {
         BaseRes res = new BaseRes();
         Date date = new Date();
         try {
+            //如果该类型正在使用，则不可删除
+            Commodity commodityEntity = new Commodity();
+            commodityEntity.setId(0);
+            commodityEntity.setType(req.getId());
+            List<Commodity> commodityList = commodityMapper.queryCommodityListByType(commodityEntity);
+            if(CollectionUtils.isNotEmpty(commodityList)) {
+                res.setResultCode(ResultEnum.TYPE_IS_USED.getCode());
+                res.setResultMsg(ResultEnum.TYPE_IS_USED.getMsg());
+                return res;
+            }
             CommodityType entity = DozerBeanUtil.map(req, CommodityType.class);
             entity.setModifyTime(date);
             commodityTypeMapper.deleteCommodityType(entity);

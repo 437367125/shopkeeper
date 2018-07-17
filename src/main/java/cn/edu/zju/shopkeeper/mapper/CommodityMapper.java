@@ -23,7 +23,7 @@ public interface CommodityMapper {
     Commodity getCommodity(@Param("id") Integer id);
 
     /**
-     * 根据商品类别获取3个商品（用于推荐）
+     * 根据商品类别获取商品（用于推荐）
      *
      * @param commodity
      * @return

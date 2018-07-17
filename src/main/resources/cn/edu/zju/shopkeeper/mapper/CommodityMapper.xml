@@ -13,8 +13,6 @@
         WHERE type = #{type}
               AND id != #{id}
               AND state = 1
-        ORDER BY RAND()
-        LIMIT 3
     </select>
     <insert id="createCommodity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO commodity

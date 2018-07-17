@@ -1,6 +1,5 @@
 package cn.edu.zju.shopkeeper.controller;
 
-import cn.edu.zju.shopkeeper.annotation.BuyerLoginRequired;
 import cn.edu.zju.shopkeeper.annotation.LoginRequired;
 import cn.edu.zju.shopkeeper.annotation.SellerLoginRequired;
 import cn.edu.zju.shopkeeper.constants.ShopkeeperConstant;

@@ -25,6 +25,7 @@ public enum ResultEnum {
     USER_NOT_EXIST("0015", "该用户不存在"),
     LOGIN_METHOD_ERROR("0016", "登录方式不正确，请重试"),
     USER_TYPE_ERROR("0017", "用户类型不正确，操作被拒绝"),
+    TYPE_IS_USED("0018", "该类型正在使用，无法删除"),
 
     SYSTEM_ERROR("9999", "系统异常");
     /**
