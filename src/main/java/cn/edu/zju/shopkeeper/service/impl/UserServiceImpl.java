@@ -11,6 +11,8 @@ import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
 import cn.edu.zju.shopkeeper.mapper.UserMapper;
 import cn.edu.zju.shopkeeper.service.UserService;
 import cn.edu.zju.shopkeeper.utils.DozerBeanUtil;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -184,7 +186,7 @@ public class UserServiceImpl implements UserService {
      * @throws ShopkeeperException
      */
     @Override
-    public BaseRes comparePassword(UserReq req) throws ShopkeeperException {
+    public ObjectRes<String> comparePassword(UserReq req) throws ShopkeeperException {
         logger.info("invoke UserServiceImpl comparePassword, req:{}", req);
         //参数校验
         if (req.getLoginMethod() == null || StringUtils.isBlank(req.getPassword()) ||
@@ -193,7 +195,7 @@ public class UserServiceImpl implements UserService {
             logger.error("UserServiceImpl comparePassword missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
-        BaseRes res = new BaseRes();
+        ObjectRes<String> res = new ObjectRes<>();
         User user;
         //获取用户信息
         if (ShopkeeperConstant.USERNAME_LOGIN.equals(req.getLoginMethod())) {
@@ -201,10 +203,26 @@ public class UserServiceImpl implements UserService {
         } else {
             user = userMapper.getUserByPhone(req.getPhoneNumber());
         }
+        //用户不存在则直接抛异常
+        if (user == null) {
+            throw new ShopkeeperException(ResultEnum.USER_NOT_EXIST);
+        }
         //密码校验
         if (user.getPassword().equals(passwordToHash(req.getPassword()))) {
             res.setResultCode(ResultEnum.SUCCESS.getCode());
             res.setResultMsg(ResultEnum.SUCCESS.getMsg());
+            //校验成功后要生成token
+            try {
+                String token = JWT.create()
+                        // 将 user id 保存到 token 里面
+                        .withAudience(user.getId().toString())
+                        // 以 password 作为 token 的密钥
+                        .sign(Algorithm.HMAC256(user.getPassword()));
+                res.setResultObj(token);
+            } catch (Exception e) {
+                logger.error("UserServiceImpl comparePassword error:{}", ExceptionUtils.getStackTrace(e));
+                throw new ShopkeeperException(ResultEnum.SYSTEM_ERROR);
+            }
         } else {
             throw new ShopkeeperException(ResultEnum.PASSWORD_ERROR);
         }

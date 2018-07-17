@@ -71,4 +71,16 @@ public class ShopkeeperConstant {
      * 订单类别：需要配送
      */
     public static final Integer NEED_DELIVERY = 1;
+    /**
+     * 返回信息
+     */
+    public static final String RESULT_MSG = "resultMsg";
+    /**
+     * 返回编码
+     */
+    public static final String RESULT_CODE = "resultCode";
+    /**
+     * token
+     */
+    public static final String TOKEN = "token";
 }

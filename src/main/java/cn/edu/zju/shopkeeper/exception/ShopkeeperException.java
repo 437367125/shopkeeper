@@ -29,7 +29,7 @@ public class ShopkeeperException extends Exception {
      */
     public ShopkeeperException(ResultEnum errEnum) {
         this.errorCode = errEnum.getCode();
-        this.message = new StringBuilder("error info is:").append(errEnum.getMsg()).toString();
+        this.message = errEnum.getMsg().toString();
     }
 
     public ShopkeeperException(ResultEnum errEnum, String errorMes) {

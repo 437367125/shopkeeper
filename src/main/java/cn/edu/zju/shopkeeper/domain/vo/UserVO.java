@@ -27,6 +27,10 @@ public class UserVO {
      * 用户昵称
      */
     private String nickname;
+    /**
+     * 用户密码
+     */
+    private String password;
 
     public Integer getId() {
         return id;
@@ -68,6 +72,14 @@ public class UserVO {
         this.nickname = nickname;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "UserVO{" +
@@ -76,6 +88,7 @@ public class UserVO {
                 ", phoneNumber=" + phoneNumber +
                 ", email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

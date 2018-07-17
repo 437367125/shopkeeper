@@ -56,5 +56,5 @@ public interface UserService {
      * @return
      * @throws ShopkeeperException
      */
-    BaseRes comparePassword(UserReq req) throws ShopkeeperException;
+    ObjectRes<String> comparePassword(UserReq req) throws ShopkeeperException;
 }

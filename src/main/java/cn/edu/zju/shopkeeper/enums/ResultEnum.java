@@ -20,6 +20,10 @@ public enum ResultEnum {
     PAY_FAIL("0010", "支付失败"),
     INSUFFICIENT_BALANCE("0011", "该银行卡余额不足"),
     INVENTORY_SHORTAGE("0012", "该商品库存不足"),
+    TOKEN_NOT_EXIST("0013", "您尚未登录，请先登录"),
+    TOKEN_INVALID("0014", "请重新登录"),
+    USER_NOT_EXIST("0015", "该用户不存在"),
+    LOGIN_METHOD_ERROR("0016", "登录方式不正确，请重试"),
     SYSTEM_ERROR("9999", "系统异常");
     /**
      * 代码
