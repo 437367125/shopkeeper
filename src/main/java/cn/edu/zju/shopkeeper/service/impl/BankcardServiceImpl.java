@@ -86,7 +86,7 @@ public class BankcardServiceImpl implements BankcardService {
     public BaseRes deleteBankcard(BankcardReq req) throws ShopkeeperException {
         logger.info("invoke BankcardServiceImpl deleteBankcard, req:{}", req);
         //参数校验
-        if (req.getId() == null) {
+        if (req.getId() == null || req.getUserId() == null) {
             logger.error("BankcardServiceImpl deleteBankcard missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }

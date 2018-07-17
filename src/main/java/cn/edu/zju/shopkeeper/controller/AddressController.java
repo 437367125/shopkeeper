@@ -5,6 +5,7 @@ import cn.edu.zju.shopkeeper.constants.ShopkeeperConstant;
 import cn.edu.zju.shopkeeper.domain.req.AddressReq;
 import cn.edu.zju.shopkeeper.domain.res.BaseRes;
 import cn.edu.zju.shopkeeper.domain.res.ListRes;
+import cn.edu.zju.shopkeeper.domain.res.ObjectRes;
 import cn.edu.zju.shopkeeper.domain.vo.AddressVO;
 import cn.edu.zju.shopkeeper.enums.ResultEnum;
 import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
@@ -44,7 +45,7 @@ public class AddressController extends BaseController {
 
     @ApiOperation(value = "用户查询自己的地址列表", response = JSONObject.class)
     @ApiImplicitParam(name = "token", value = "用户令牌", required = true, paramType = "header")
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @BuyerLoginRequired
     public JSONObject getAddressList(@RequestHeader String token) {
         JSONObject jsonObject = new JSONObject();
@@ -181,6 +182,33 @@ public class AddressController extends BaseController {
             res.setResultCode(e.getErrorCode());
             res.setResultMsg(e.getMessage());
         }
+        jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
+        jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
+        return jsonObject;
+    }
+
+    @ApiOperation(value = "用户获取单个地址详情", response = JSONObject.class)
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "token", value = "用户令牌", required = true, paramType = "header"),
+            @ApiImplicitParam(name = "addressId", value = "地址主键", required = true, paramType = "query"),
+    })
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    @BuyerLoginRequired
+    public JSONObject getAddressInfo(@RequestHeader String token,
+                                     @RequestParam Integer addressId) {
+        JSONObject jsonObject = new JSONObject();
+        ObjectRes<AddressVO> res = new ObjectRes<>();
+        AddressReq req = new AddressReq();
+        req.setId(addressId);
+        try {
+            req.setUserId(getUser(token));
+            res = addressService.getAddress(req);
+        } catch (ShopkeeperException e) {
+            logger.error("AddressController getAddressInfo error:{}", ExceptionUtils.getStackTrace(e));
+            res.setResultCode(e.getErrorCode());
+            res.setResultMsg(e.getMessage());
+        }
+        jsonObject.put(ShopkeeperConstant.ADDRESS_INFO, res.getResultObj());
         jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
         jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
         return jsonObject;

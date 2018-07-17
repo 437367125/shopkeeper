@@ -87,4 +87,13 @@ public class ShopkeeperConstant {
      * 地址列表
      */
     public static final String ADDRESS_LIST = "addressList";
+    /**
+     * 地址详情
+     */
+    public static final String ADDRESS_INFO = "addressInfo";
+    /**
+     * 银行卡列表
+     */
+    public static final String BANKCARD_LIST = "bankcardList";
+
 }

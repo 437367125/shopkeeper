@@ -11,6 +11,7 @@
         SET state       = 0,
             modify_time = #{modifyTime}
         WHERE id = #{id}
+              AND user_id = #{userId}
     </update>
     <update id="updateBalance" parameterType="Bankcard">
         UPDATE bankcard
