@@ -60,8 +60,8 @@ public interface AddressMapper {
     /**
      * 根据地址主键查询单条地址详情
      *
-     * @param id 地址主键
+     * @param address 地址主键
      * @return 地址详情
      */
-    Address getAddress(@Param("id") Integer id);
+    Address getAddress(Address address);
 }

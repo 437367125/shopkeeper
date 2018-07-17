@@ -8,6 +8,7 @@ import cn.edu.zju.shopkeeper.enums.ResultEnum;
 import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
 import cn.edu.zju.shopkeeper.service.UserService;
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018/7/17 上午10:13
  * Description 用户控制类
  */
+@Api(description = "用户控制器")
 @RestController
 @RequestMapping("")
 public class UserController {

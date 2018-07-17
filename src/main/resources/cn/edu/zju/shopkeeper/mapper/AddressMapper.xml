@@ -17,6 +17,7 @@
         SET state       = 0,
             modify_time = #{modifyTime}
         WHERE id = #{id}
+              AND user_id = #{userId}
     </update>
     <update id="clearDefaultAddress" parameterType="Address">
         UPDATE address
@@ -25,10 +26,12 @@
         WHERE user_id = #{userId}
               AND state = 1
     </update>
-    <update id="setDefaultAddress" parameterType="Integer">
+    <update id="setDefaultAddress" parameterType="Address">
         UPDATE address
         SET type = 1
         WHERE id = #{id}
+              AND user_id = #{userId}
+              AND state = 1
     </update>
     <update id="updateAddress" parameterType="Address">
         UPDATE address
@@ -36,11 +39,14 @@
             phone_number        = #{phoneNumber},
             modify_time         = #{modifyTime}
         WHERE id = #{id}
+              AND user_id = #{userId}
+              AND state = 1
     </update>
     <select id="getAddress" resultType="Address">
         SELECT *
         FROM address
         WHERE id = #{id}
               AND state = 1
+              AND user_id = #{userId}
     </select>
 </mapper>

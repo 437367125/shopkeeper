@@ -9,9 +9,9 @@ import java.lang.annotation.Target;
  * @author Wang Zejie
  * @version V1.0
  * @date 2018/7/17 上午9:38
- * Description 登录验证注解
+ * Description 卖家登录验证
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LoginRequired {
+public @interface SellerLoginRequired {
 }

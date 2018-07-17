@@ -148,6 +148,7 @@ public class AddressServiceImpl implements AddressService {
                     entity = new Address();
                     entity.setId(list.get(0).getId());
                     entity.setModifyTime(date);
+                    entity.setUserId(req.getUserId());
                     addressMapper.setDefaultAddress(entity);
                 }
             }
@@ -209,7 +210,7 @@ public class AddressServiceImpl implements AddressService {
         logger.info("invoke AddressServiceImpl updateAddress, req:{}", req);
         //参数校验
         if (req.getId() == null || req.getPhoneNumber() == null ||
-                StringUtils.isBlank(req.getAddressDescription())) {
+                StringUtils.isBlank(req.getAddressDescription()) || req.getUserId() == null) {
             logger.error("AddressServiceImpl updateAddress missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
@@ -239,13 +240,13 @@ public class AddressServiceImpl implements AddressService {
     public ObjectRes<AddressVO> getAddress(AddressReq req) throws ShopkeeperException {
         logger.info("invoke AddressServiceImpl getAddress, req:{}", req);
         //参数校验
-        if (req.getId() == null) {
+        if (req.getId() == null || req.getUserId() == null) {
             logger.error("AddressServiceImpl getAddress missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
         ObjectRes<AddressVO> res = new ObjectRes<>();
         try {
-            Address address = addressMapper.getAddress(req.getId());
+            Address address = addressMapper.getAddress(DozerBeanUtil.map(req, Address.class));
             res.setResultObj(DozerBeanUtil.map(address, AddressVO.class));
             res.setResultCode(ResultEnum.SUCCESS.getCode());
             res.setResultMsg(ResultEnum.SUCCESS.getMsg());

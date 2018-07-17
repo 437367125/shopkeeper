@@ -31,6 +31,10 @@ public class UserVO {
      * 用户密码
      */
     private String password;
+    /**
+     * 用户类型：0卖家 1卖家
+     */
+    private Integer type;
 
     public Integer getId() {
         return id;
@@ -80,6 +84,14 @@ public class UserVO {
         this.password = password;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "UserVO{" +
@@ -89,6 +101,7 @@ public class UserVO {
                 ", email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

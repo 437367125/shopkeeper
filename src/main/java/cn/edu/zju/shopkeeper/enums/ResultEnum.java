@@ -24,6 +24,8 @@ public enum ResultEnum {
     TOKEN_INVALID("0014", "请重新登录"),
     USER_NOT_EXIST("0015", "该用户不存在"),
     LOGIN_METHOD_ERROR("0016", "登录方式不正确，请重试"),
+    USER_TYPE_ERROR("0017", "用户类型不正确，操作被拒绝"),
+
     SYSTEM_ERROR("9999", "系统异常");
     /**
      * 代码

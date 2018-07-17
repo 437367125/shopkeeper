@@ -83,4 +83,8 @@ public class ShopkeeperConstant {
      * token
      */
     public static final String TOKEN = "token";
+    /**
+     * 地址列表
+     */
+    public static final String ADDRESS_LIST = "addressList";
 }
