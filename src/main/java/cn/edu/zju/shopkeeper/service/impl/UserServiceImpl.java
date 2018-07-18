@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
      * @throws ShopkeeperException
      */
     @Override
-    public BaseRes updateUser(UserReq req) throws ShopkeeperException {
+    public ObjectRes<UserVO> updateUser(UserReq req) throws ShopkeeperException {
         logger.info("invoke UserServiceImpl updateUser, req:{}", req);
         //参数校验
         if (req.getPhoneNumber() == null || StringUtils.isBlank(req.getNickname()) ||
@@ -104,12 +104,13 @@ public class UserServiceImpl implements UserService {
             logger.error("UserServiceImpl updateUser missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
-        BaseRes res = new BaseRes();
+        ObjectRes<UserVO> res = new ObjectRes<>();
         Date date = new Date();
         try {
             User entity = DozerBeanUtil.map(req, User.class);
             entity.setModifyTime(date);
             userMapper.updateUser(entity);
+            res.setResultObj(DozerBeanUtil.map(userMapper.getUserById(req.getId()), UserVO.class));
             res.setResultCode(ResultEnum.SUCCESS.getCode());
             res.setResultMsg(ResultEnum.SUCCESS.getMsg());
         } catch (Exception e) {
@@ -130,7 +131,8 @@ public class UserServiceImpl implements UserService {
     public BaseRes updatePassword(UserReq req) throws ShopkeeperException {
         logger.info("invoke UserServiceImpl updatePassword, req:{}", req);
         //参数校验
-        if (req.getId() == null || StringUtils.isBlank(req.getPassword())) {
+        if (req.getId() == null || StringUtils.isBlank(req.getPassword()) ||
+                StringUtils.isBlank(req.getOldPassword())) {
             logger.error("UserServiceImpl updatePassword missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
@@ -138,6 +140,13 @@ public class UserServiceImpl implements UserService {
         Date date = new Date();
         req.setPassword(passwordToHash(req.getPassword()));
         try {
+            User userInDatabase = userMapper.getUserById(req.getId());
+            //先判断原密码是否正确
+            if (!userInDatabase.getPassword().equals(passwordToHash(req.getOldPassword()))) {
+                res.setResultCode(ResultEnum.OLD_PASSWORD_ERROR.getCode());
+                res.setResultMsg(ResultEnum.OLD_PASSWORD_ERROR.getMsg());
+                return res;
+            }
             User entity = DozerBeanUtil.map(req, User.class);
             entity.setModifyTime(date);
             userMapper.updatePassword(entity);
@@ -186,7 +195,7 @@ public class UserServiceImpl implements UserService {
      * @throws ShopkeeperException
      */
     @Override
-    public ObjectRes<String> comparePassword(UserReq req) throws ShopkeeperException {
+    public ObjectRes<UserVO> comparePassword(UserReq req) throws ShopkeeperException {
         logger.info("invoke UserServiceImpl comparePassword, req:{}", req);
         //参数校验
         if (req.getLoginMethod() == null || StringUtils.isBlank(req.getPassword()) ||
@@ -195,7 +204,7 @@ public class UserServiceImpl implements UserService {
             logger.error("UserServiceImpl comparePassword missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
-        ObjectRes<String> res = new ObjectRes<>();
+        ObjectRes<UserVO> res = new ObjectRes<>();
         User user;
         //获取用户信息
         if (ShopkeeperConstant.USERNAME_LOGIN.equals(req.getLoginMethod())) {
@@ -218,7 +227,8 @@ public class UserServiceImpl implements UserService {
                         .withAudience(user.getId().toString())
                         // 以 password 作为 token 的密钥
                         .sign(Algorithm.HMAC256(user.getPassword()));
-                res.setResultObj(token);
+                res.setResultObj(DozerBeanUtil.map(user, UserVO.class));
+                res.getResultObj().setToken(token);
             } catch (Exception e) {
                 logger.error("UserServiceImpl comparePassword error:{}", ExceptionUtils.getStackTrace(e));
                 throw new ShopkeeperException(ResultEnum.SYSTEM_ERROR);

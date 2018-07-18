@@ -32,6 +32,10 @@ public class UserReq {
      */
     private String password;
     /**
+     * 旧密码
+     */
+    private String oldPassword;
+    /**
      * 用户类别（0卖家，1买家）
      */
     private Integer type;
@@ -105,6 +109,14 @@ public class UserReq {
         this.loginMethod = loginMethod;
     }
 
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
     @Override
     public String toString() {
         return "UserReq{" +
@@ -114,6 +126,7 @@ public class UserReq {
                 ", email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
+                ", oldPassword='" + oldPassword + '\'' +
                 ", type=" + type +
                 ", loginMethod=" + loginMethod +
                 '}';

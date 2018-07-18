@@ -35,6 +35,10 @@ public class UserVO {
      * 用户类型：0卖家 1卖家
      */
     private Integer type;
+    /**
+     * 用户令牌
+     */
+    private String token;
 
     public Integer getId() {
         return id;
@@ -92,6 +96,14 @@ public class UserVO {
         this.type = type;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "UserVO{" +
@@ -102,6 +114,7 @@ public class UserVO {
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
                 ", type=" + type +
+                ", token='" + token + '\'' +
                 '}';
     }
 }

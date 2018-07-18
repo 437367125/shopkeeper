@@ -80,9 +80,9 @@ public class ShopkeeperConstant {
      */
     public static final String RESULT_CODE = "resultCode";
     /**
-     * token
+     * 用户信息
      */
-    public static final String TOKEN = "token";
+    public static final String USER_INFO = "userInfo";
     /**
      * 地址列表
      */

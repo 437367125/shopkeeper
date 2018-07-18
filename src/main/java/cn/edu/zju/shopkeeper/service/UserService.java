@@ -29,7 +29,7 @@ public interface UserService {
      * @return
      * @throws ShopkeeperException
      */
-    BaseRes updateUser(UserReq req) throws ShopkeeperException;
+    ObjectRes<UserVO> updateUser(UserReq req) throws ShopkeeperException;
 
     /**
      * 修改密码
@@ -56,5 +56,5 @@ public interface UserService {
      * @return
      * @throws ShopkeeperException
      */
-    ObjectRes<String> comparePassword(UserReq req) throws ShopkeeperException;
+    ObjectRes<UserVO> comparePassword(UserReq req) throws ShopkeeperException;
 }
