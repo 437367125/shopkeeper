@@ -46,6 +46,10 @@ public class UserOrderReq {
      */
     private Integer status;
     /**
+     * 订单是否被删除（0已删除，1未删除）
+     */
+    private Integer state;
+    /**
      * 订单的商品列表
      */
     private List<OrderCommodityRelationshipReq> commodityList;
@@ -122,6 +126,14 @@ public class UserOrderReq {
         this.status = status;
     }
 
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     public List<OrderCommodityRelationshipReq> getCommodityList() {
         return commodityList;
     }
@@ -142,6 +154,7 @@ public class UserOrderReq {
                 ", type=" + type +
                 ", addressId=" + addressId +
                 ", status=" + status +
+                ", state=" + state +
                 ", commodityList=" + commodityList +
                 '}';
     }

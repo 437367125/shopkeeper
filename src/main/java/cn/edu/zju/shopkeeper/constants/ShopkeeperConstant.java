@@ -115,4 +115,12 @@ public class ShopkeeperConstant {
      * 商品类别详情
      */
     public static final String COMMODITY_TYPE_INFO = "commodityTypeInfo";
+    /**
+     * 订单列表
+     */
+    public static final String ORDER_LIST = "orderList";
+    /**
+     * 订单详情
+     */
+    public static final String ORDER_INFO = "orderInfo";
 }

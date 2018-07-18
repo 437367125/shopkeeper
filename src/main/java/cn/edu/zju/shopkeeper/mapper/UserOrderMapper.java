@@ -53,8 +53,22 @@ public interface UserOrderMapper {
     /**
      * 根据订单主键获取订单详情
      *
-     * @param id 订单主键
+     * @param userOrder 订单请求
      * @return
      */
-    UserOrder getUserOrderById(@Param("id") Integer id);
+    UserOrder getUserOrderById(UserOrder userOrder);
+
+    /**
+     * 根据类型获取所有订单列表（卖家适用）
+     *
+     * @return
+     */
+    List<UserOrder> queryAllOrderListByStatus(UserOrder userOrder);
+
+    /**
+     * 订单状态更新（包括发货、收货、取消、删除）
+     *
+     * @param userOrder
+     */
+    void updateOrder(UserOrder userOrder);
 }

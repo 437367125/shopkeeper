@@ -23,6 +23,10 @@ public class AddressReq {
      * 联系电话
      */
     private Long phoneNumber;
+    /**
+     * 状态（0无效，1有效）
+     */
+    private Integer state;
 
     public Integer getId() {
         return id;
@@ -56,6 +60,14 @@ public class AddressReq {
         this.phoneNumber = phoneNumber;
     }
 
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "AddressReq{" +
@@ -63,6 +75,7 @@ public class AddressReq {
                 ", userId=" + userId +
                 ", addressDescription='" + addressDescription + '\'' +
                 ", phoneNumber=" + phoneNumber +
+                ", state=" + state +
                 '}';
     }
 }

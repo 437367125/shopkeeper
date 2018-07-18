@@ -19,6 +19,7 @@
         SET status        = #{status},
             delivery_time = #{deliveryTime}
         WHERE id = #{id}
+              AND status = 2
     </update>
     <update id="updateComplete" parameterType="UserOrder">
         UPDATE user_order
@@ -35,7 +36,49 @@
     <select id="getUserOrderById" resultType="UserOrder">
         SELECT *
         FROM user_order
-        WHERE id = #{id}
-              AND state = 1
+        <where>
+            id = #{id}
+            <if test="state != null">
+                AND state = #{state}
+            </if>
+        </where>
     </select>
+    <select id="queryAllOrderListByStatus" resultType="UserOrder">
+        SELECT *
+        FROM user_order
+        <where>
+            <if test="status != null">
+                status = #{status}
+            </if>
+            <if test="state != null">
+                AND state = #{state}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+        </where>
+    </select>
+    <update id="updateOrder" parameterType="UserOrder">
+        UPDATE user_order
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime},
+            </if>
+            <if test="completeTime != null">
+                complete_time = #{completeTime},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="cancelTime != null">
+                cancel_time = #{cancelTime},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
 </mapper>

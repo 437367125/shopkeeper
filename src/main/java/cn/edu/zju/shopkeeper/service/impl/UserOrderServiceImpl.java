@@ -1,23 +1,18 @@
 package cn.edu.zju.shopkeeper.service.impl;
 
 import cn.edu.zju.shopkeeper.constants.ShopkeeperConstant;
-import cn.edu.zju.shopkeeper.domain.Bankcard;
-import cn.edu.zju.shopkeeper.domain.Commodity;
-import cn.edu.zju.shopkeeper.domain.OrderCommodityRelationship;
-import cn.edu.zju.shopkeeper.domain.UserOrder;
+import cn.edu.zju.shopkeeper.domain.*;
 import cn.edu.zju.shopkeeper.domain.req.OrderCommodityRelationshipReq;
 import cn.edu.zju.shopkeeper.domain.req.UserOrderReq;
 import cn.edu.zju.shopkeeper.domain.res.BaseRes;
 import cn.edu.zju.shopkeeper.domain.res.ListRes;
 import cn.edu.zju.shopkeeper.domain.res.ObjectRes;
+import cn.edu.zju.shopkeeper.domain.vo.AddressVO;
 import cn.edu.zju.shopkeeper.domain.vo.CommodityVO;
 import cn.edu.zju.shopkeeper.domain.vo.UserOrderVO;
 import cn.edu.zju.shopkeeper.enums.ResultEnum;
 import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
-import cn.edu.zju.shopkeeper.mapper.BankcardMapper;
-import cn.edu.zju.shopkeeper.mapper.CommodityMapper;
-import cn.edu.zju.shopkeeper.mapper.OrderCommodityRelationshipMapper;
-import cn.edu.zju.shopkeeper.mapper.UserOrderMapper;
+import cn.edu.zju.shopkeeper.mapper.*;
 import cn.edu.zju.shopkeeper.service.UserOrderService;
 import cn.edu.zju.shopkeeper.utils.DozerBeanUtil;
 import cn.edu.zju.shopkeeper.utils.OrderNumberUtil;
@@ -49,14 +44,17 @@ public class UserOrderServiceImpl implements UserOrderService {
     private UserOrderMapper userOrderMapper;
     private OrderCommodityRelationshipMapper orderCommodityRelationshipMapper;
     private CommodityMapper commodityMapper;
+    private AddressMapper addressMapper;
 
     @Autowired
-    public UserOrderServiceImpl(BankcardMapper bankcardMapper, UserOrderMapper userOrderMapper, OrderCommodityRelationshipMapper orderCommodityRelationshipMapper, CommodityMapper commodityMapper) {
+    public UserOrderServiceImpl(BankcardMapper bankcardMapper, UserOrderMapper userOrderMapper, OrderCommodityRelationshipMapper orderCommodityRelationshipMapper, CommodityMapper commodityMapper, AddressMapper addressMapper) {
         this.bankcardMapper = bankcardMapper;
         this.userOrderMapper = userOrderMapper;
         this.orderCommodityRelationshipMapper = orderCommodityRelationshipMapper;
         this.commodityMapper = commodityMapper;
+        this.addressMapper = addressMapper;
     }
+
 
     /**
      * 创建新订单
@@ -99,6 +97,8 @@ public class UserOrderServiceImpl implements UserOrderService {
         //创建订单-商品关系
         req.setId(userOrderId);
         createOrderCommodityRelationship(req, commodities);
+        res.setResultCode(ResultEnum.SUCCESS.getCode());
+        res.setResultMsg(ResultEnum.SUCCESS.getMsg());
         return res;
     }
 
@@ -147,6 +147,12 @@ public class UserOrderServiceImpl implements UserOrderService {
         BaseRes res = new BaseRes();
         Date date = new Date();
         try {
+            UserOrder userOrderInDatabase = userOrderMapper.getUserOrderById(DozerBeanUtil.map(req, UserOrder.class));
+            if (userOrderInDatabase == null || !ShopkeeperConstant.WAITING_DELIVERY.equals(userOrderInDatabase.getStatus())) {
+                res.setResultCode(ResultEnum.ORDER_STATUS_ERROR.getCode());
+                res.setResultMsg(ResultEnum.ORDER_STATUS_ERROR.getMsg());
+                return res;
+            }
             UserOrder entity = new UserOrder();
             entity.setId(req.getId());
             entity.setDeliveryTime(date);
@@ -172,13 +178,22 @@ public class UserOrderServiceImpl implements UserOrderService {
     public BaseRes updateComplete(UserOrderReq req) throws ShopkeeperException {
         logger.info("invoke UserOrderServiceImpl updateComplete, req:{}", req);
         //参数校验
-        if (req.getId() == null) {
+        if (req.getId() == null || req.getUserId() == null) {
             logger.error("UserOrderServiceImpl updateComplete missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
         BaseRes res = new BaseRes();
         Date date = new Date();
         try {
+            //首先判断订单状态是否正常
+            UserOrder userOrderInDatabase = userOrderMapper.getUserOrderById(DozerBeanUtil.map(req, UserOrder.class));
+            if (userOrderInDatabase == null || !userOrderInDatabase.getUserId().equals(req.getUserId()) ||
+                    !ShopkeeperConstant.DELIVERY.equals(userOrderInDatabase.getStatus())) {
+                res.setResultCode(ResultEnum.ORDER_STATUS_ERROR.getCode());
+                res.setResultMsg(ResultEnum.ORDER_STATUS_ERROR.getMsg());
+                return res;
+            }
+            //更新订单状态
             UserOrder entity = new UserOrder();
             entity.setId(req.getId());
             entity.setCompleteTime(date);
@@ -238,7 +253,14 @@ public class UserOrderServiceImpl implements UserOrderService {
         }
         ObjectRes<UserOrderVO> res = new ObjectRes<>();
         try {
-            UserOrder userOrder = userOrderMapper.getUserOrderById(req.getId());
+            UserOrder entity = DozerBeanUtil.map(req, UserOrder.class);
+            UserOrder userOrder = userOrderMapper.getUserOrderById(entity);
+            //首先校验该订单是否是自己的订单
+            if (userOrder == null || req.getUserId() != null && !req.getUserId().equals(userOrder.getUserId())) {
+                res.setResultCode(ResultEnum.ORDER_STATUS_ERROR.getCode());
+                res.setResultMsg(ResultEnum.ORDER_STATUS_ERROR.getMsg());
+                return res;
+            }
             UserOrderVO userOrderVO = DozerBeanUtil.map(userOrder, UserOrderVO.class);
             List<OrderCommodityRelationship> list = orderCommodityRelationshipMapper.queryOrderCommodityRelationshipList(req.getId());
             List<CommodityVO> commodityVOS = new ArrayList<>();
@@ -249,11 +271,125 @@ public class UserOrderServiceImpl implements UserOrderService {
                 commodityVO.setCount(o.getCount());
                 commodityVOS.add(commodityVO);
             }
+            //如果需要配送，还需设置地址详情
+            if (userOrder.getAddressId() != null) {
+                Address addressEntity = new Address();
+                addressEntity.setId(userOrder.getAddressId());
+                Address address = addressMapper.getAddress(addressEntity);
+                userOrderVO.setAddressVO(DozerBeanUtil.map(address, AddressVO.class));
+            }
+
             userOrderVO.setCommodityList(commodityVOS);
             res.setResultObj(userOrderVO);
+            res.setResultCode(ResultEnum.SUCCESS.getCode());
+            res.setResultMsg(ResultEnum.SUCCESS.getMsg());
         } catch (Exception e) {
             logger.error("UserOrderServiceImpl getUserOrderById error:{}", ExceptionUtils.getStackTrace(e));
             throw new ShopkeeperException(ResultEnum.DATA_QUERY_FAIL);
+        }
+        return res;
+    }
+
+    /**
+     * 根据订单的状态获取所有订单
+     *
+     * @param req
+     * @return
+     * @throws ShopkeeperException
+     */
+    @Override
+    public ListRes<UserOrderVO> queryAllOrderListByStatus(UserOrderReq req) throws ShopkeeperException {
+        logger.info("invoke UserOrderServiceImpl queryAllOrderListByStatus, req:{}", req);
+//        //参数校验
+//        if (req.getStatus() == null) {
+//            logger.error("UserOrderServiceImpl queryAllOrderListByStatus missing param, req:{}", req);
+//            throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
+//        }
+        ListRes<UserOrderVO> res = new ListRes<>();
+        try {
+            UserOrder entity = DozerBeanUtil.map(req, UserOrder.class);
+            List<UserOrder> list = userOrderMapper.queryAllOrderListByStatus(entity);
+            res.setResultList(DozerBeanUtil.mapList(list, UserOrderVO.class));
+            res.setResultCode(ResultEnum.SUCCESS.getCode());
+            res.setResultMsg(ResultEnum.SUCCESS.getMsg());
+        } catch (Exception e) {
+            logger.error("UserOrderServiceImpl queryAllOrderListByStatus error:{}", ExceptionUtils.getStackTrace(e));
+            throw new ShopkeeperException(ResultEnum.DATA_QUERY_FAIL);
+        }
+        return res;
+    }
+
+    /**
+     * 更新订单状态（包括发货、收货、取消、删除）
+     *
+     * @param req
+     * @return
+     * @throws ShopkeeperException
+     */
+    @Override
+    public BaseRes updateOrder(UserOrderReq req) throws ShopkeeperException {
+        logger.info("invoke UserOrderServiceImpl updateOrder, req:{}", req);
+        //参数校验
+        if (req.getId() == null) {
+            logger.error("UserOrderServiceImpl updateOrder missing param, req:{}", req);
+            throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
+        }
+        BaseRes res = new BaseRes();
+        Date date = new Date();
+        try {
+            UserOrder entity = new UserOrder();
+            entity.setId(req.getId());
+            //根据主键获取该订单在数据库中的情况
+            UserOrder userOrderInDatabase = userOrderMapper.getUserOrderById(entity);
+            entity = DozerBeanUtil.map(req, UserOrder.class);
+            //发货、收货、取消
+            if (req.getStatus() != null) {
+                if (ShopkeeperConstant.DELIVERY.equals(req.getStatus())) {
+                    //订单发货
+                    entity.setDeliveryTime(date);
+                } else if (ShopkeeperConstant.COMPLETED.equals(req.getStatus())) {
+                    if (req.getUserId() == null || !req.getUserId().equals(userOrderInDatabase.getUserId()) ||
+                            ShopkeeperConstant.INVALID.equals(userOrderInDatabase.getState())) {
+                        //发起请求的用户主键与订单所属的用户不匹配，或是订单已被买家删除，说明是恶意请求
+                        res.setResultCode(ResultEnum.ORDER_STATUS_ERROR.getCode());
+                        res.setResultMsg(ResultEnum.ORDER_STATUS_ERROR.getMsg());
+                        return res;
+                    }
+                    //确认收货
+                    entity.setCompleteTime(date);
+                } else if (ShopkeeperConstant.CANCEL.equals(req.getStatus())) {
+                    //订单状态不是待发货，或者订单无效，或者订单主键不属于请求发起者，都是恶意请求
+                    if (!ShopkeeperConstant.WAITING_DELIVERY.equals(userOrderInDatabase.getStatus()) ||
+                            ShopkeeperConstant.INVALID.equals(userOrderInDatabase.getState()) ||
+                            req.getUserId() == null ||
+                            !req.getUserId().equals(userOrderInDatabase.getUserId())) {
+                        res.setResultCode(ResultEnum.ORDER_STATUS_ERROR.getCode());
+                        res.setResultMsg(ResultEnum.ORDER_STATUS_ERROR.getMsg());
+                        return res;
+                    }
+                    //取消订单
+                    entity.setCancelTime(date);
+
+                } else {
+                    //非以上三种状态说明是恶意请求
+                    res.setResultCode(ResultEnum.ORDER_STATUS_ERROR.getCode());
+                    res.setResultMsg(ResultEnum.ORDER_STATUS_ERROR.getMsg());
+                    return res;
+                }
+            } else if (req.getState() == null || req.getUserId() == null ||
+                    !req.getUserId().equals(userOrderInDatabase.getUserId()) ||
+                    ShopkeeperConstant.INVALID.equals(userOrderInDatabase.getState())) {
+                //发起请求的用户主键与订单所属的用户不匹配，说明是恶意请求
+                res.setResultCode(ResultEnum.ORDER_STATUS_ERROR.getCode());
+                res.setResultMsg(ResultEnum.ORDER_STATUS_ERROR.getMsg());
+                return res;
+            }
+            userOrderMapper.updateOrder(entity);
+            res.setResultCode(ResultEnum.SUCCESS.getCode());
+            res.setResultMsg(ResultEnum.SUCCESS.getMsg());
+        } catch (Exception e) {
+            logger.error("UserOrderServiceImpl updateOrder error:{}", ExceptionUtils.getStackTrace(e));
+            throw new ShopkeeperException(ResultEnum.DATA_UPDATE_FAIL);
         }
         return res;
     }

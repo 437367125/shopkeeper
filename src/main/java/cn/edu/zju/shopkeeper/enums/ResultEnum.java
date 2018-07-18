@@ -26,6 +26,7 @@ public enum ResultEnum {
     LOGIN_METHOD_ERROR("0016", "登录方式不正确，请重试"),
     USER_TYPE_ERROR("0017", "用户类型不正确，操作被拒绝"),
     TYPE_IS_USED("0018", "该类型正在使用，无法删除"),
+    ORDER_STATUS_ERROR("0019", "订单状态异常"),
 
     SYSTEM_ERROR("9999", "系统异常");
     /**

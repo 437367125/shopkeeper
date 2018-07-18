@@ -68,4 +68,21 @@ public interface UserOrderService {
      * @throws ShopkeeperException
      */
     ObjectRes<UserOrderVO> getUserOrderById(UserOrderReq req) throws ShopkeeperException;
+
+    /**
+     * 根据订单的状态获取所有订单
+     *
+     * @param req
+     * @return
+     * @throws ShopkeeperException
+     */
+    ListRes<UserOrderVO> queryAllOrderListByStatus(UserOrderReq req) throws ShopkeeperException;
+
+    /**
+     * 更新订单状态（包括发货、收货、取消、删除）
+     * @param req
+     * @return
+     * @throws ShopkeeperException
+     */
+    BaseRes updateOrder(UserOrderReq req) throws ShopkeeperException;
 }

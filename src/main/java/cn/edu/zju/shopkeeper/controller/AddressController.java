@@ -200,15 +200,18 @@ public class AddressController extends BaseController {
         ObjectRes<AddressVO> res = new ObjectRes<>();
         AddressReq req = new AddressReq();
         req.setId(addressId);
+        req.setState(ShopkeeperConstant.VALID);
         try {
             req.setUserId(getUser(token).getId());
             res = addressService.getAddress(req);
+            if (res.getResultObj() != null) {
+                jsonObject.put(ShopkeeperConstant.ADDRESS_INFO, res.getResultObj());
+            }
         } catch (ShopkeeperException e) {
             logger.error("AddressController getAddressInfo error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(e.getErrorCode());
             res.setResultMsg(e.getMessage());
         }
-        jsonObject.put(ShopkeeperConstant.ADDRESS_INFO, res.getResultObj());
         jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
         jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
         return jsonObject;

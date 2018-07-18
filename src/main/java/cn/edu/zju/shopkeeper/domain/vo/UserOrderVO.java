@@ -61,13 +61,17 @@ public class UserOrderVO {
      */
     private Date completeTime;
     /**
+     * 取消时间
+     */
+    private Date cancelTime;
+    /**
      * 订单商品列表
      */
     private List<CommodityVO> commodityList;
     /**
      * 配送地址
      */
-    private Address address;
+    private AddressVO addressVO;
 
     public Integer getId() {
         return id;
@@ -173,12 +177,20 @@ public class UserOrderVO {
         this.commodityList = commodityList;
     }
 
-    public Address getAddress() {
-        return address;
+    public AddressVO getAddressVO() {
+        return addressVO;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddressVO(AddressVO addressVO) {
+        this.addressVO = addressVO;
+    }
+
+    public Date getCancelTime() {
+        return cancelTime;
+    }
+
+    public void setCancelTime(Date cancelTime) {
+        this.cancelTime = cancelTime;
     }
 
     @Override
@@ -196,8 +208,9 @@ public class UserOrderVO {
                 ", payTime=" + payTime +
                 ", deliveryTime=" + deliveryTime +
                 ", completeTime=" + completeTime +
+                ", cancelTime=" + cancelTime +
                 ", commodityList=" + commodityList +
-                ", address=" + address +
+                ", addressVO=" + addressVO +
                 '}';
     }
 }

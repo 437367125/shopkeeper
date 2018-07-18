@@ -247,7 +247,9 @@ public class AddressServiceImpl implements AddressService {
         ObjectRes<AddressVO> res = new ObjectRes<>();
         try {
             Address address = addressMapper.getAddress(DozerBeanUtil.map(req, Address.class));
-            res.setResultObj(DozerBeanUtil.map(address, AddressVO.class));
+            if (address != null) {
+                res.setResultObj(DozerBeanUtil.map(address, AddressVO.class));
+            }
             res.setResultCode(ResultEnum.SUCCESS.getCode());
             res.setResultMsg(ResultEnum.SUCCESS.getMsg());
         } catch (Exception e) {

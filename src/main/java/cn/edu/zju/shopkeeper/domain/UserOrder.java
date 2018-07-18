@@ -1,5 +1,6 @@
 package cn.edu.zju.shopkeeper.domain;
 
+import javax.xml.crypto.Data;
 import java.util.Date;
 
 /**
@@ -65,6 +66,10 @@ public class UserOrder {
      * 完成时间（无需配送则这个时间与付款时间相同）
      */
     private Date completeTime;
+    /**
+     * 订单取消时间
+     */
+    private Date cancelTime;
 
     public Integer getId() {
         return id;
@@ -178,6 +183,14 @@ public class UserOrder {
         this.completeTime = completeTime;
     }
 
+    public Date getCancelTime() {
+        return cancelTime;
+    }
+
+    public void setCancelTime(Date cancelTime) {
+        this.cancelTime = cancelTime;
+    }
+
     @Override
     public String toString() {
         return "UserOrder{" +
@@ -195,6 +208,7 @@ public class UserOrder {
                 ", payTime=" + payTime +
                 ", deliveryTime=" + deliveryTime +
                 ", completeTime=" + completeTime +
+                ", cancelTime=" + cancelTime +
                 '}';
     }
 }

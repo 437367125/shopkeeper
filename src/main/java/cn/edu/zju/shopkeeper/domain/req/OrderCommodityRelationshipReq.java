@@ -1,32 +1,24 @@
 package cn.edu.zju.shopkeeper.domain.req;
 
+import java.io.Serializable;
+
 /**
  * @author Wang Zejie
  * @version V1.0
  * @date 2018/7/16 上午11:12
  * Description 订单-商品关系请求类
  */
-public class OrderCommodityRelationshipReq {
+public class OrderCommodityRelationshipReq implements Serializable {
+
+    private static final long serialVersionUID = 6511941326671638725L;
     /**
-     * 主键
-     */
-    private Integer id;
-    /**
-     * 商品列表
+     * 商品主键
      */
     private Integer commodityId;
     /**
      * 商品数量
      */
     private Integer count;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getCommodityId() {
         return commodityId;
@@ -47,7 +39,6 @@ public class OrderCommodityRelationshipReq {
     @Override
     public String toString() {
         return "OrderCommodityRelationship{" +
-                "id=" + id +
                 ", commodityId=" + commodityId +
                 ", count=" + count +
                 '}';
