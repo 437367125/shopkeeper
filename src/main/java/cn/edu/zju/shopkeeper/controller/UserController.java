@@ -14,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import netscape.javascript.JSObject;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -184,6 +185,28 @@ public class UserController extends BaseController {
             logger.error("UserController updateUserInfo error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(ResultEnum.SYSTEM_ERROR.getCode());
             res.setResultMsg(ResultEnum.SYSTEM_ERROR.getMsg());
+        }
+        jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
+        jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
+        return jsonObject;
+    }
+
+    @ApiOperation(value = "根据用户令牌获取全部个人信息", response = JSONObject.class)
+    @ApiImplicitParam(name = "token", value = "用户令牌", required = true, paramType = "header")
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    @LoginRequired
+    public JSONObject getUserInfo(@RequestHeader String token) {
+        JSONObject jsonObject = new JSONObject();
+        ObjectRes<UserVO> res = new ObjectRes<>();
+        UserReq req = new UserReq();
+        try {
+            req.setId(getUser(token).getId());
+            res = userService.getUser(req);
+            jsonObject.put(ShopkeeperConstant.USER_INFO, res.getResultObj());
+        } catch (ShopkeeperException e) {
+            logger.error("UserController getUserInfo error:{}", ExceptionUtils.getStackTrace(e));
+            res.setResultCode(e.getErrorCode());
+            res.setResultMsg(e.getMessage());
         }
         jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
         jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
