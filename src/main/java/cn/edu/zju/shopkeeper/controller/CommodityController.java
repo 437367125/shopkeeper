@@ -44,15 +44,13 @@ public class CommodityController extends BaseController {
         this.commodityService = commodityService;
     }
 
-    @ApiOperation(value = "卖家根据商品名模糊查询商品列表", response = JSONObject.class)
+    @ApiOperation(value = "卖家根据商品名模糊查询商品列表（无输入则获取全部）", response = JSONObject.class)
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "token", value = "用户令牌", required = true, paramType = "header"),
-            @ApiImplicitParam(name = "commodityName", value = "商品名", required = true, paramType = "query")
+            @ApiImplicitParam(name = "commodityName", value = "商品名", paramType = "query")
     })
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @SellerLoginRequired
-    public JSONObject getCommodityList(@RequestHeader String token,
-                                       @RequestParam String commodityName) {
+    public JSONObject getCommodityList(@RequestParam(required = false) String commodityName) {
         JSONObject jsonObject = new JSONObject();
         ListRes<CommodityVO> res = new ListRes<>();
         CommodityReq req = new CommodityReq();
@@ -72,13 +70,11 @@ public class CommodityController extends BaseController {
 
     @ApiOperation(value = "买家或卖家根据商品主键获取商品详情", response = JSONObject.class)
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "token", value = "用户令牌", required = true, paramType = "header"),
             @ApiImplicitParam(name = "commodityId", value = "商品主键", required = true, paramType = "query")
     })
     @RequestMapping(value = "", method = RequestMethod.GET)
     @LoginRequired
-    public JSONObject getCommodityInfo(@RequestHeader String token,
-                                       @RequestParam Integer commodityId) {
+    public JSONObject getCommodityInfo(@RequestParam Integer commodityId) {
         JSONObject jsonObject = new JSONObject();
         ObjectRes<CommodityVO> res = new ObjectRes<>();
         CommodityReq req = new CommodityReq();

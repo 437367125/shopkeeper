@@ -49,7 +49,11 @@
     <select id="queryCommodityList" resultType="Commodity">
         SELECT *
         FROM commodity
-        WHERE commodity_name LIKE '%${commodityName}%'
-              AND state = 1
+        <where>
+            <if test="commodityName != null">
+                commodity_name LIKE '%${commodityName}%'
+            </if>
+            AND state = 1
+        </where>
     </select>
 </mapper>

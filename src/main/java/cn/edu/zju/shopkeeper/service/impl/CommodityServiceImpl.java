@@ -212,10 +212,10 @@ public class CommodityServiceImpl implements CommodityService {
     public ListRes<CommodityVO> queryCommodityList(CommodityReq req) throws ShopkeeperException {
         logger.info("invoke CommodityServiceImpl queryCommodityList, req:{}", req);
         //参数校验
-        if (StringUtils.isBlank(req.getCommodityName())) {
-            logger.error("CommodityServiceImpl queryCommodityList missing param, req:{}", req);
-            throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
-        }
+//        if (StringUtils.isBlank(req.getCommodityName())) {
+//            logger.error("CommodityServiceImpl queryCommodityList missing param, req:{}", req);
+//            throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
+//        }
         ListRes<CommodityVO> res = new ListRes<>();
         try {
             List<Commodity> list = commodityMapper.queryCommodityList(DozerBeanUtil.map(req, Commodity.class));
