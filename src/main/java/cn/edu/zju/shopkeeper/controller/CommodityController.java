@@ -9,6 +9,7 @@ import cn.edu.zju.shopkeeper.domain.res.ListRes;
 import cn.edu.zju.shopkeeper.domain.res.ObjectRes;
 import cn.edu.zju.shopkeeper.domain.vo.CommodityVO;
 import cn.edu.zju.shopkeeper.domain.vo.UserVO;
+import cn.edu.zju.shopkeeper.enums.ResultEnum;
 import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
 import cn.edu.zju.shopkeeper.service.CommodityService;
 import com.alibaba.fastjson.JSONObject;
@@ -74,18 +75,22 @@ public class CommodityController extends BaseController {
     })
     @RequestMapping(value = "", method = RequestMethod.GET)
     @LoginRequired
-    public JSONObject getCommodityInfo(@RequestParam Integer commodityId) {
+    public JSONObject getCommodityInfo(@RequestParam String commodityId) {
         JSONObject jsonObject = new JSONObject();
         ObjectRes<CommodityVO> res = new ObjectRes<>();
         CommodityReq req = new CommodityReq();
-        req.setId(commodityId);
         try {
+            req.setId(Integer.parseInt(commodityId));
             res = commodityService.getCommodity(req);
             jsonObject.put(ShopkeeperConstant.COMMODITY_INFO, res.getResultObj());
         } catch (ShopkeeperException e) {
             logger.error("CommodityController getCommodityInfo error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(e.getErrorCode());
             res.setResultMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error("CommodityController getCommodityInfo error:{}", ExceptionUtils.getStackTrace(e));
+            res.setResultCode(ResultEnum.SYSTEM_ERROR.getCode());
+            res.setResultMsg(ResultEnum.SYSTEM_ERROR.getMsg());
         }
         jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
         jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
@@ -110,30 +115,34 @@ public class CommodityController extends BaseController {
                                       @RequestParam String commodityName,
                                       @RequestParam String description,
                                       @RequestParam String location,
-                                      @RequestParam Integer inventory,
-                                      @RequestParam Double price,
+                                      @RequestParam String inventory,
+                                      @RequestParam String price,
                                       @RequestParam String picture,
-                                      @RequestParam Integer type) {
+                                      @RequestParam String type) {
         JSONObject jsonObject = new JSONObject();
         ObjectRes<Integer> res = new ObjectRes<>();
         CommodityReq req = new CommodityReq();
         req.setCommodityName(commodityName);
         req.setDescription(description);
         req.setLocation(location);
-        req.setInventory(inventory);
-        req.setPrice(price);
         req.setPicture(picture);
-        req.setType(type);
         try {
             UserVO userVO = getUser(token);
             req.setCreater(userVO.getUsername());
             req.setModifier(userVO.getUsername());
+            req.setInventory(Integer.parseInt(inventory));
+            req.setPrice(Double.parseDouble(price));
+            req.setType(Integer.parseInt(type));
             res = commodityService.createCommodity(req);
             jsonObject.put(ShopkeeperConstant.COMMODITY_ID, res.getResultObj());
         } catch (ShopkeeperException e) {
             logger.error("CommodityController createCommodity error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(e.getErrorCode());
             res.setResultMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error("CommodityController createCommodity error:{}", ExceptionUtils.getStackTrace(e));
+            res.setResultCode(ResultEnum.SYSTEM_ERROR.getCode());
+            res.setResultMsg(ResultEnum.SYSTEM_ERROR.getMsg());
         }
         jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
         jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
@@ -148,18 +157,22 @@ public class CommodityController extends BaseController {
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     @SellerLoginRequired
     public JSONObject deleteCommodity(@RequestHeader String token,
-                                      @RequestParam Integer commodityId) {
+                                      @RequestParam String commodityId) {
         JSONObject jsonObject = new JSONObject();
         BaseRes res = new BaseRes();
         CommodityReq req = new CommodityReq();
-        req.setId(commodityId);
         try {
             req.setModifier(getUser(token).getUsername());
+            req.setId(Integer.parseInt(commodityId));
             res = commodityService.deleteCommodity(req);
         } catch (ShopkeeperException e) {
             logger.error("CommodityController deleteCommodity error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(e.getErrorCode());
             res.setResultMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error("CommodityController deleteCommodity error:{}", ExceptionUtils.getStackTrace(e));
+            res.setResultCode(ResultEnum.SYSTEM_ERROR.getCode());
+            res.setResultMsg(ResultEnum.SYSTEM_ERROR.getMsg());
         }
         jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
         jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
@@ -181,33 +194,37 @@ public class CommodityController extends BaseController {
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @SellerLoginRequired
     public JSONObject updateCommodity(@RequestHeader String token,
-                                      @RequestParam Integer commodityId,
+                                      @RequestParam String commodityId,
                                       @RequestParam String commodityName,
                                       @RequestParam String description,
                                       @RequestParam String location,
-                                      @RequestParam Integer inventory,
-                                      @RequestParam Double price,
+                                      @RequestParam String inventory,
+                                      @RequestParam String price,
                                       @RequestParam String picture,
-                                      @RequestParam Integer type) {
+                                      @RequestParam String type) {
         JSONObject jsonObject = new JSONObject();
         BaseRes res = new BaseRes();
         CommodityReq req = new CommodityReq();
         req.setCommodityName(commodityName);
         req.setDescription(description);
         req.setLocation(location);
-        req.setInventory(inventory);
-        req.setPrice(price);
         req.setPicture(picture);
-        req.setType(type);
-        req.setId(commodityId);
         try {
             UserVO userVO = getUser(token);
             req.setModifier(userVO.getUsername());
+            req.setInventory(Integer.parseInt(inventory));
+            req.setType(Integer.parseInt(type));
+            req.setId(Integer.parseInt(commodityId));
+            req.setPrice(Double.parseDouble(price));
             res = commodityService.updateCommodity(req);
         } catch (ShopkeeperException e) {
             logger.error("CommodityController updateCommodity error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(e.getErrorCode());
             res.setResultMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error("CommodityController updateCommodity error:{}", ExceptionUtils.getStackTrace(e));
+            res.setResultCode(ResultEnum.SYSTEM_ERROR.getCode());
+            res.setResultMsg(ResultEnum.SYSTEM_ERROR.getMsg());
         }
         jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
         jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
