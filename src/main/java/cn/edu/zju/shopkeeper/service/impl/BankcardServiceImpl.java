@@ -12,6 +12,7 @@ import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
 import cn.edu.zju.shopkeeper.mapper.BankcardMapper;
 import cn.edu.zju.shopkeeper.service.BankcardService;
 import cn.edu.zju.shopkeeper.utils.DozerBeanUtil;
+import cn.edu.zju.shopkeeper.utils.PasswordUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -53,13 +54,15 @@ public class BankcardServiceImpl implements BankcardService {
     public BaseRes createBankcard(BankcardReq req) throws ShopkeeperException {
         logger.info("invoke BankcardServiceImpl createBankcard, req:{}", req);
         //参数校验
-        if (req.getUserId() == null || req.getBalance() == null ||
-                req.getBankcardNumber() == null || StringUtils.isBlank(req.getBankName())) {
+        if (req.getUserId() == null || req.getBankcardNumber() == null ||
+                req.getPassword() == null) {
             logger.error("BankcardServiceImpl createBankcard missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
         BaseRes res = new BaseRes();
         Date date = new Date();
+        //给密码做hash
+        req.setPassword(PasswordUtil.passwordToHash(req.getPassword()));
         try {
             Bankcard entity = DozerBeanUtil.map(req, Bankcard.class);
             entity.setCreateTime(date);

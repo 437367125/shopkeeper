@@ -123,4 +123,12 @@ public class ShopkeeperConstant {
      * 订单详情
      */
     public static final String ORDER_INFO = "orderInfo";
+    /**
+     * 免密支付金额：500元
+     */
+    public static final Integer PAY_WITHOUT_PASSWORD = 500;
+    /**
+     * 卖家银行卡主键，写死
+     */
+    public static final Integer SELLER_BANKCARD_ID = 8;
 }

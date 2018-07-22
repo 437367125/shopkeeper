@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
  * Description 银行卡控制器
  */
 @Api(value = "/bankcard", description = "银行卡控制器")
-
 @RestController
 @RequestMapping("/bankcard")
 public class BankcardController extends BaseController {
@@ -70,20 +69,17 @@ public class BankcardController extends BaseController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "token", value = "用户令牌", required = true, paramType = "header"),
             @ApiImplicitParam(name = "bankcardNumber", value = "银行卡号", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "bankName", value = "银行名", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "balance", value = "余额", required = true, paramType = "query")
+            @ApiImplicitParam(name = "bankcardPassword", value = "银行卡密码", required = true, paramType = "query"),
     })
     @RequestMapping(value = "", method = RequestMethod.POST)
     @BuyerLoginRequired
     public JSONObject createBankcard(@RequestHeader String token,
                                      @RequestParam String bankcardNumber,
-                                     @RequestParam String bankName,
-                                     @RequestParam Double balance) {
+                                     @RequestParam String bankcardPassword) {
         JSONObject jsonObject = new JSONObject();
         BaseRes res = new BaseRes();
         BankcardReq req = new BankcardReq();
-        req.setBalance(balance);
-        req.setBankName(bankName);
+        req.setPassword(bankcardPassword);
         try {
             req.setUserId(getUser(token).getId());
             req.setBankcardNumber(Long.parseLong(bankcardNumber));
@@ -110,18 +106,22 @@ public class BankcardController extends BaseController {
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     @BuyerLoginRequired
     public JSONObject deleteBankcard(@RequestHeader String token,
-                                     @RequestParam Integer bankcardId) {
+                                     @RequestParam String bankcardId) {
         JSONObject jsonObject = new JSONObject();
         BaseRes res = new BaseRes();
         BankcardReq req = new BankcardReq();
-        req.setId(bankcardId);
         try {
+            req.setId(Integer.parseInt(bankcardId));
             req.setUserId(getUser(token).getId());
             res = bankcardService.deleteBankcard(req);
         } catch (ShopkeeperException e) {
             logger.error("BankcardController deleteBankcard error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(e.getErrorCode());
             res.setResultMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error("BankcardController deleteBankcard error:{}", ExceptionUtils.getStackTrace(e));
+            res.setResultCode(ResultEnum.SYSTEM_ERROR.getCode());
+            res.setResultMsg(ResultEnum.SYSTEM_ERROR.getMsg());
         }
         jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
         jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());

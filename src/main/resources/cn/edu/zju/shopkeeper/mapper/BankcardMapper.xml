@@ -3,8 +3,9 @@
 <mapper namespace="cn.edu.zju.shopkeeper.mapper.BankcardMapper">
     <insert id="createBankcard" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO bankcard
-        (user_id, bankcard_number, bank_name, balance, state, create_time, modify_time)
-        VALUES (#{userId}, #{bankcardNumber}, #{bankName}, #{balance}, #{state}, #{createTime}, #{modifyTime})
+        (user_id, bankcard_number, password, state, create_time, modify_time)
+        VALUES
+            (#{userId}, #{bankcardNumber}, #{password}, #{state}, #{createTime}, #{modifyTime})
     </insert>
     <update id="deleteBankcard" parameterType="Bankcard">
         UPDATE bankcard
@@ -15,7 +16,7 @@
     </update>
     <update id="updateBalance" parameterType="Bankcard">
         UPDATE bankcard
-        SET balance     = #{balance},
+        SET balance     = balance + #{balance},
             modify_time = #{modifyTime}
         WHERE id = #{id}
     </update>
@@ -29,6 +30,12 @@
         SELECT *
         FROM bankcard
         WHERE id = #{id}
+              AND state = 1
+    </select>
+    <select id="getBankcard" resultType="Bankcard">
+        SELECT *
+        FROM bankcard
+        WHERE bankcard_number = #{bankcardNumber}
               AND state = 1
     </select>
 </mapper>

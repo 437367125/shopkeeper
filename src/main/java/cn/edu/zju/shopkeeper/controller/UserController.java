@@ -46,6 +46,7 @@ public class UserController extends BaseController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
             @ApiImplicitParam(name = "phoneNumber", value = "手机号", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "email", value = "邮箱地址", required = true, paramType = "query"),
             @ApiImplicitParam(name = "nickname", value = "昵称", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "query"),
             @ApiImplicitParam(name = "type", value = "用户类型（0卖家，1买家）", required = true, paramType = "query")
@@ -53,6 +54,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public JSONObject register(@RequestParam String username,
                                @RequestParam String phoneNumber,
+                               @RequestParam String email,
                                @RequestParam String nickname,
                                @RequestParam String password,
                                @RequestParam Integer type) throws ShopkeeperException {
@@ -66,6 +68,7 @@ public class UserController extends BaseController {
             logger.error("UserController register error:{}", ExceptionUtils.getStackTrace(e));
             throw new ShopkeeperException(ResultEnum.SYSTEM_ERROR);
         }
+        req.setEmail(email);
         req.setNickname(nickname);
         req.setPassword(password);
         req.setType(type);

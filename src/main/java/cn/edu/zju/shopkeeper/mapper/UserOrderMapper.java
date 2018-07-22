@@ -71,4 +71,12 @@ public interface UserOrderMapper {
      * @param userOrder
      */
     void updateOrder(UserOrder userOrder);
+
+    /**
+     * 通过日期查询订单列表
+     *
+     * @param userOrder
+     * @return
+     */
+    List<UserOrder> queryUserOrderListByDate(UserOrder userOrder);
 }

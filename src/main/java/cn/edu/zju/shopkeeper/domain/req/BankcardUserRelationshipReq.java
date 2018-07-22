@@ -3,10 +3,10 @@ package cn.edu.zju.shopkeeper.domain.req;
 /**
  * @author Wang Zejie
  * @version V1.0
- * @date 2018/7/16 上午11:49
- * Description 银行卡请求类
+ * @date 2018/7/21 下午3:40
+ * Description 银行卡-用户关系请求类
  */
-public class BankcardReq {
+public class BankcardUserRelationshipReq {
     /**
      * 主键
      */
@@ -58,7 +58,7 @@ public class BankcardReq {
 
     @Override
     public String toString() {
-        return "BankcardReq{" +
+        return "BankcardUserRelationshipReq{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", bankcardNumber=" + bankcardNumber +

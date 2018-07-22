@@ -32,8 +32,6 @@ public class BankcardServiceImplTest {
         BankcardReq req = new BankcardReq();
         req.setUserId(1);
         req.setBankcardNumber(99999999999L);
-        req.setBankName("工商银行");
-        req.setBalance(10000.00);
         try {
             BaseRes res = bankcardService.createBankcard(req);
             System.out.println(res.getResultMsg());

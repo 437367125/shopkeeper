@@ -11,6 +11,7 @@ import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
 import cn.edu.zju.shopkeeper.mapper.UserMapper;
 import cn.edu.zju.shopkeeper.service.UserService;
 import cn.edu.zju.shopkeeper.utils.DozerBeanUtil;
+import cn.edu.zju.shopkeeper.utils.PasswordUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.apache.commons.lang3.StringUtils;
@@ -20,9 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+
+import static cn.edu.zju.shopkeeper.utils.PasswordUtil.passwordToHash;
+
 
 /**
  * @author Wang Zejie
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
         //参数校验
         if (req.getPhoneNumber() == null || req.getType() == null ||
                 StringUtils.isBlank(req.getUsername()) || StringUtils.isBlank(req.getNickname()) ||
-                StringUtils.isBlank(req.getPassword())) {
+                StringUtils.isBlank(req.getPassword()) || StringUtils.isBlank(req.getEmail())) {
             logger.error("UserServiceImpl createUser missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
@@ -293,31 +295,4 @@ public class UserServiceImpl implements UserService {
         return user == null;
     }
 
-    /**
-     * 给密码做hash
-     *
-     * @param password 要hash的密码
-     * @return hash结果
-     * @throws ShopkeeperException
-     */
-    private String passwordToHash(String password) throws ShopkeeperException {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.update(password.getBytes());
-            byte[] src = digest.digest();
-            StringBuilder stringBuilder = new StringBuilder();
-            // 字节数组转16进制字符串
-            for (byte aSrc : src) {
-                String s = Integer.toHexString(aSrc & 0xFF);
-                if (s.length() < 2) {
-                    stringBuilder.append('0');
-                }
-                stringBuilder.append(s);
-            }
-            return stringBuilder.toString();
-        } catch (NoSuchAlgorithmException e) {
-            logger.error("UserServiceImpl passwordToHash error:{}", ExceptionUtils.getStackTrace(e));
-            throw new ShopkeeperException(ResultEnum.SYSTEM_ERROR);
-        }
-    }
 }

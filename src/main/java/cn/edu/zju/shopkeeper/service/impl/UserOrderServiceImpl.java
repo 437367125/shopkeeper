@@ -88,6 +88,10 @@ public class UserOrderServiceImpl implements UserOrderService {
         }
         req.setTotalNum(totalNum);
         req.setTotalPrice(totalPrice);
+        //判断当前是否可以免密支付
+        if (req.getPassword() == null && !payWithoutPassword(req)) {
+            throw new ShopkeeperException(ResultEnum.NEED_BANKCARD_PASSWORD);
+        }
         //创建订单前先进行付款
         if (!pay(req)) {
             throw new ShopkeeperException(ResultEnum.INSUFFICIENT_BALANCE);
@@ -395,6 +399,59 @@ public class UserOrderServiceImpl implements UserOrderService {
     }
 
     /**
+     * 取消订单
+     *
+     * @param req
+     * @return
+     * @throws ShopkeeperException
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseRes updateOrderCancel(UserOrderReq req) throws ShopkeeperException {
+        logger.info("invoke UserOrderServiceImpl updateOrderCancel, req:{}", req);
+        //参数校验
+        if (req.getId() == null || req.getUserId() == null) {
+            logger.error("UserOrderServiceImpl updateOrderCancel missing param, req:{}", req);
+            throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
+        }
+        BaseRes res = new BaseRes();
+        Date date = new Date();
+        try {
+            UserOrder entity = new UserOrder();
+            entity.setId(req.getId());
+            //在数据库中查找这个订单
+            UserOrder userOrderInDatabase = userOrderMapper.getUserOrderById(entity);
+            //订单不存在或不处于待发货状态，或者是订单无效、订单不属于请求发起者，都是订单状态异常
+            if (userOrderInDatabase == null || !ShopkeeperConstant.WAITING_DELIVERY.equals(userOrderInDatabase.getStatus()) ||
+                    ShopkeeperConstant.INVALID.equals(userOrderInDatabase.getState()) || !userOrderInDatabase.getUserId().equals(req.getUserId())) {
+                res.setResultCode(ResultEnum.ORDER_STATUS_ERROR.getCode());
+                res.setResultMsg(ResultEnum.ORDER_STATUS_ERROR.getMsg());
+                return res;
+            }
+            //设置订单状态为已取消
+            entity = new UserOrder();
+            entity.setId(req.getId());
+            entity.setCancelTime(date);
+            entity.setStatus(ShopkeeperConstant.CANCEL);
+            userOrderMapper.updateOrder(entity);
+            Bankcard bankcardEntity = new Bankcard();
+            //卖家银行卡扣钱
+            bankcardEntity.setId(ShopkeeperConstant.SELLER_BANKCARD_ID);
+            bankcardEntity.setBalance(-userOrderInDatabase.getTotalPrice());
+            bankcardEntity.setModifyTime(date);
+            bankcardMapper.updateBalance(bankcardEntity);
+            //买家银行卡加钱
+            bankcardEntity.setId(userOrderInDatabase.getBankcardId());
+            bankcardEntity.setBalance(userOrderInDatabase.getTotalPrice());
+            bankcardMapper.updateBalance(bankcardEntity);
+        } catch (Exception e) {
+            logger.error("UserOrderServiceImpl updateOrderCancel error:{}", ExceptionUtils.getStackTrace(e));
+            throw new ShopkeeperException(ResultEnum.DATA_UPDATE_FAIL);
+        }
+        return res;
+    }
+
+    /**
      * 校验库存
      *
      * @param list
@@ -433,10 +490,16 @@ public class UserOrderServiceImpl implements UserOrderService {
             if (bankcard == null || bankcard.getBalance() < req.getTotalPrice()) {
                 return false;
             } else {
-                //扣款
+                //买家扣款
                 Bankcard entity = new Bankcard();
                 entity.setId(req.getBankcardId());
-                entity.setBalance(bankcard.getBalance() - req.getTotalPrice());
+                entity.setBalance(-req.getTotalPrice());
+                entity.setModifyTime(date);
+                bankcardMapper.updateBalance(entity);
+                //卖家加钱
+                entity = new Bankcard();
+                entity.setId(ShopkeeperConstant.SELLER_BANKCARD_ID);
+                entity.setBalance(req.getTotalPrice());
                 entity.setModifyTime(date);
                 bankcardMapper.updateBalance(entity);
                 return true;
@@ -505,6 +568,22 @@ public class UserOrderServiceImpl implements UserOrderService {
             logger.error("UserOrderServiceImpl createOrderCommodityRelationship error:{}", ExceptionUtils.getStackTrace(e));
             throw new ShopkeeperException(ResultEnum.DATA_INSERT_FAIL);
         }
+    }
 
+    private boolean payWithoutPassword(UserOrderReq req) {
+        UserOrder entity = new UserOrder();
+        entity.setUserId(req.getUserId());
+        entity.setPayTime(new Date());
+        List<UserOrder> userOrders = userOrderMapper.queryUserOrderListByDate(entity);
+        int total = 0;
+        if (userOrders != null) {
+            for (UserOrder u : userOrders) {
+                total += u.getTotalPrice();
+            }
+            if (total + req.getTotalPrice() > ShopkeeperConstant.PAY_WITHOUT_PASSWORD) {
+                return false;
+            }
+        }
+        return true;
     }
 }

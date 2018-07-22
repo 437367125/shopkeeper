@@ -22,6 +22,10 @@ public class Bankcard {
      */
     private Long bankcardNumber;
     /**
+     * 银行卡密码
+     */
+    private String password;
+    /**
      * 银行名
      */
     private String bankName;
@@ -106,12 +110,21 @@ public class Bankcard {
         this.state = state;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "Bankcard{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", bankcardNumber=" + bankcardNumber +
+                ", password='" + password + '\'' +
                 ", bankName='" + bankName + '\'' +
                 ", balance=" + balance +
                 ", state=" + state +

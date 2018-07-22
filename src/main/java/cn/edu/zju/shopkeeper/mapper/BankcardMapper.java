@@ -50,4 +50,12 @@ public interface BankcardMapper {
      * @return
      */
     Bankcard getBankcardById(@Param("id") Integer id);
+
+    /**
+     * 根据银行卡号获取银行卡详情
+     *
+     * @param bankcardNumber
+     * @return
+     */
+    Bankcard getBankcard(@Param("bankcardNumber") Long bankcardNumber);
 }

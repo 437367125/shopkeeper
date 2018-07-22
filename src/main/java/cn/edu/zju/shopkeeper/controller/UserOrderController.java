@@ -71,6 +71,7 @@ public class UserOrderController extends BaseController {
             @ApiImplicitParam(name = "token", value = "用户令牌", required = true, paramType = "header"),
             @ApiImplicitParam(name = "type", value = "订单类型（0无需配送，1需要配送）", required = true, paramType = "query"),
             @ApiImplicitParam(name = "bankcardId", value = "银行卡主键", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "bankcardPassword", value = "银行卡密码（第一次不用输入，第二次请求再输入）", paramType = "query"),
             @ApiImplicitParam(name = "addressId", value = "地址主键", paramType = "query"),
             @ApiImplicitParam(name = "list", value = "商品列表", required = true, paramType = "body")
     })
@@ -79,6 +80,7 @@ public class UserOrderController extends BaseController {
     public JSONObject createOrder(@RequestHeader String token,
                                   @RequestParam Integer type,
                                   @RequestParam Integer bankcardId,
+                                  @RequestParam(required = false) Integer bankcardPassword,
                                   @RequestParam(required = false) Integer addressId,
                                   @RequestBody List<OrderCommodityRelationshipReq> list) {
         JSONObject jsonObject = new JSONObject();
@@ -86,6 +88,7 @@ public class UserOrderController extends BaseController {
         UserOrderReq req = new UserOrderReq();
         req.setType(type);
         req.setBankcardId(bankcardId);
+        req.setPassword(bankcardPassword);
         req.setAddressId(addressId);
         req.setCommodityList(list);
         try {
@@ -219,10 +222,9 @@ public class UserOrderController extends BaseController {
         BaseRes res = new BaseRes();
         UserOrderReq req = new UserOrderReq();
         req.setId(userOrderId);
-        req.setStatus(ShopkeeperConstant.CANCEL);
         try {
             req.setUserId(getUser(token).getId());
-            res = userOrderService.updateOrder(req);
+            res = userOrderService.updateOrderCancel(req);
         } catch (ShopkeeperException e) {
             logger.error("UserOrderController cancelOrder error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(e.getErrorCode());

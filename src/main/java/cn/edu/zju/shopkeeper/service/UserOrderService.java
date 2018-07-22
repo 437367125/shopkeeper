@@ -80,9 +80,19 @@ public interface UserOrderService {
 
     /**
      * 更新订单状态（包括发货、收货、取消、删除）
+     *
      * @param req
      * @return
      * @throws ShopkeeperException
      */
     BaseRes updateOrder(UserOrderReq req) throws ShopkeeperException;
+
+    /**
+     * 取消订单
+     *
+     * @param req
+     * @return
+     * @throws ShopkeeperException
+     */
+    BaseRes updateOrderCancel(UserOrderReq req) throws ShopkeeperException;
 }

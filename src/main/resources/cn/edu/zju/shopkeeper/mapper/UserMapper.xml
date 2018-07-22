@@ -3,8 +3,9 @@
 <mapper namespace="cn.edu.zju.shopkeeper.mapper.UserMapper">
     <insert id="createUser" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user
-        (username, phone_number, nickname, password, type, state, create_time, modify_time)
-        VALUES (#{username}, #{phoneNumber}, #{nickname}, #{password}, #{type}, #{state}, #{createTime}, #{modifyTime})
+        (username, phone_number, email, nickname, password, type, state, create_time, modify_time)
+        VALUES (#{username}, #{phoneNumber}, #{email}, #{nickname}, #{password}, #{type}, #{state}, #{createTime},
+                #{modifyTime})
     </insert>
     <update id="updateUser" parameterType="User">
         UPDATE user

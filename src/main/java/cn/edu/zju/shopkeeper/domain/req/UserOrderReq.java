@@ -34,6 +34,10 @@ public class UserOrderReq {
      */
     private Integer bankcardId;
     /**
+     * 用于付款的银行卡密码
+     */
+    private Integer password;
+    /**
      * 订单类别（0为无需配送，1为需要配送）
      */
     private Integer type;
@@ -142,6 +146,14 @@ public class UserOrderReq {
         this.commodityList = commodityList;
     }
 
+    public Integer getPassword() {
+        return password;
+    }
+
+    public void setPassword(Integer password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "UserOrderReq{" +
@@ -151,6 +163,7 @@ public class UserOrderReq {
                 ", totalNum=" + totalNum +
                 ", totalPrice=" + totalPrice +
                 ", bankcardId=" + bankcardId +
+                ", password=" + password +
                 ", type=" + type +
                 ", addressId=" + addressId +
                 ", status=" + status +

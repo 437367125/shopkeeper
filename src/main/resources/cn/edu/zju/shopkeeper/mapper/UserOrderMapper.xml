@@ -81,4 +81,10 @@
             id = #{id}
         </where>
     </update>
+    <select id="queryUserOrderListByDate" resultType="UserOrder">
+        SELECT *
+        FROM user_order
+        WHERE user_id = #{userId}
+              AND pay_time = #{payTime, jdbcType=DATE}
+    </select>
 </mapper>

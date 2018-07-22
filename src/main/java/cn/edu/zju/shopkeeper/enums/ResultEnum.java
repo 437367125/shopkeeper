@@ -28,8 +28,11 @@ public enum ResultEnum {
     TYPE_IS_USED("0018", "该类型正在使用，无法删除"),
     ORDER_STATUS_ERROR("0019", "订单状态异常"),
     OLD_PASSWORD_ERROR("0020", "原密码错误"),
+    NEED_BANKCARD_PASSWORD("0021", "请输入支付密码"),
+    BANKCARD_NOT_EXIST("0022", "该银行卡不存在"),
+    BANKCARD_STATUS_ERROR("0023", "银行卡状态异常"),
 
-    SYSTEM_ERROR("9999","系统异常");
+    SYSTEM_ERROR("9999", "系统异常");
 
     /**
      * 代码
@@ -61,4 +64,4 @@ public enum ResultEnum {
     public void setMsg(String msg) {
         this.msg = msg;
     }
-    }
+}
