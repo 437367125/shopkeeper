@@ -134,7 +134,7 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "oldPassword", value = "原密码", required = true, paramType = "query"),
             @ApiImplicitParam(name = "newPassword", value = "新密码", required = true, paramType = "query")
     })
-    @RequestMapping(value = "/password", method = RequestMethod.PUT)
+    @RequestMapping(value = "/password", method = RequestMethod.POST)
     @LoginRequired
     public JSONObject updatePassword(@RequestHeader String token,
                                      @RequestParam String oldPassword,
@@ -164,7 +164,7 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "phoneNumber", value = "手机号", required = true, paramType = "query"),
             @ApiImplicitParam(name = "email", value = "电子邮箱", paramType = "query")
     })
-    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @RequestMapping(value = "/info", method = RequestMethod.POST)
     @LoginRequired
     public JSONObject updateUserInfo(@RequestHeader String token,
                                      @RequestParam String nickname,

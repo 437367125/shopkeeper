@@ -154,7 +154,7 @@ public class CommodityController extends BaseController {
             @ApiImplicitParam(name = "token", value = "用户令牌", required = true, paramType = "header"),
             @ApiImplicitParam(name = "commodityId", value = "商品主键", required = true, paramType = "query")
     })
-    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
     @SellerLoginRequired
     public JSONObject deleteCommodity(@RequestHeader String token,
                                       @RequestParam String commodityId) {
@@ -191,7 +191,7 @@ public class CommodityController extends BaseController {
             @ApiImplicitParam(name = "picture", value = "商品图片（传地址）", required = true, paramType = "query"),
             @ApiImplicitParam(name = "type", value = "商品类型（传编号）", required = true, paramType = "query")
     })
-    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @SellerLoginRequired
     public JSONObject updateCommodity(@RequestHeader String token,
                                       @RequestParam String commodityId,
