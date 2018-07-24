@@ -45,14 +45,16 @@ public class UserOrderServiceImpl implements UserOrderService {
     private OrderCommodityRelationshipMapper orderCommodityRelationshipMapper;
     private CommodityMapper commodityMapper;
     private AddressMapper addressMapper;
+    private UserMapper userMapper;
 
     @Autowired
-    public UserOrderServiceImpl(BankcardMapper bankcardMapper, UserOrderMapper userOrderMapper, OrderCommodityRelationshipMapper orderCommodityRelationshipMapper, CommodityMapper commodityMapper, AddressMapper addressMapper) {
+    public UserOrderServiceImpl(BankcardMapper bankcardMapper, UserOrderMapper userOrderMapper, OrderCommodityRelationshipMapper orderCommodityRelationshipMapper, CommodityMapper commodityMapper, AddressMapper addressMapper, UserMapper userMapper) {
         this.bankcardMapper = bankcardMapper;
         this.userOrderMapper = userOrderMapper;
         this.orderCommodityRelationshipMapper = orderCommodityRelationshipMapper;
         this.commodityMapper = commodityMapper;
         this.addressMapper = addressMapper;
+        this.userMapper = userMapper;
     }
 
 
@@ -282,6 +284,11 @@ public class UserOrderServiceImpl implements UserOrderService {
                 Address address = addressMapper.getAddress(addressEntity);
                 userOrderVO.setAddressVO(DozerBeanUtil.map(address, AddressVO.class));
             }
+            //加入订单所有者的手机号、昵称
+            User userInDatabase = userMapper.getUserById(userOrder.getUserId());
+            userOrderVO.setPhoneNumber(userInDatabase.getPhoneNumber());
+            userOrderVO.setNickname(userInDatabase.getNickname());
+
 
             userOrderVO.setCommodityList(commodityVOS);
             res.setResultObj(userOrderVO);

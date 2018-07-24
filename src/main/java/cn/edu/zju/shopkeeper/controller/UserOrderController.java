@@ -179,7 +179,7 @@ public class UserOrderController extends BaseController {
         return jsonObject;
     }
 
-    @ApiOperation(value = "买家根据订单主键获取自己的订单详情", response = JSONObject.class)
+    @ApiOperation(value = "买家根据订单主键获取订单详情", response = JSONObject.class)
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "token", value = "用户令牌", required = true, paramType = "header"),
             @ApiImplicitParam(name = "userOrderId", value = "订单主键", paramType = "query")
@@ -201,6 +201,30 @@ public class UserOrderController extends BaseController {
             }
         } catch (ShopkeeperException e) {
             logger.error("UserOrderController getOrderListOfBuyer error:{}", ExceptionUtils.getStackTrace(e));
+            res.setResultCode(e.getErrorCode());
+            res.setResultMsg(e.getMessage());
+        }
+        jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
+        jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
+        return jsonObject;
+    }
+
+    @ApiOperation(value = "卖家根据订单主键获取订单详情", response = JSONObject.class)
+    @ApiImplicitParam(name = "userOrderId", value = "订单主键", required = true, paramType = "query")
+    @RequestMapping(value = "/seller", method = RequestMethod.GET)
+    @SellerLoginRequired
+    public JSONObject getOrderInfoOfSeller(@RequestParam Integer userOrderId) {
+        JSONObject jsonObject = new JSONObject();
+        ObjectRes<UserOrderVO> res = new ObjectRes<>();
+        UserOrderReq req = new UserOrderReq();
+        req.setId(userOrderId);
+        try {
+            res = userOrderService.getUserOrderById(req);
+            if (res.getResultObj() != null) {
+                jsonObject.put(ShopkeeperConstant.ORDER_INFO, res.getResultObj());
+            }
+        } catch (ShopkeeperException e) {
+            logger.error("UserOrderController getOrderInfoOfSeller error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(e.getErrorCode());
             res.setResultMsg(e.getMessage());
         }

@@ -5,7 +5,6 @@
         SELECT *
         FROM commodity
         WHERE id = #{id}
-              AND state = 1
     </select>
     <select id="queryCommodityListByType" resultType="Commodity">
         SELECT *

@@ -17,6 +17,14 @@ public class UserOrderVO {
      */
     private Integer id;
     /**
+     * 用户手机
+     */
+    private Long phoneNumber;
+    /**
+     * 用户昵称
+     */
+    private String nickname;
+    /**
      * 订单号
      */
     private Long orderNumber;
@@ -193,10 +201,28 @@ public class UserOrderVO {
         this.cancelTime = cancelTime;
     }
 
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     @Override
     public String toString() {
         return "UserOrderVO{" +
                 "id=" + id +
+                ", phoneNumber=" + phoneNumber +
+                ", nickname='" + nickname + '\'' +
                 ", orderNumber=" + orderNumber +
                 ", totalNum=" + totalNum +
                 ", totalPrice=" + totalPrice +
