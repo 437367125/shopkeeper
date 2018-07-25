@@ -40,11 +40,49 @@ public class AddressServiceImplTest {
     }
 
     @Test
+    public void queryAddressList2() {
+        AddressReq req = new AddressReq();
+        try {
+            ListRes<AddressVO> res = addressService.queryAddressList(req);
+            System.out.println(res.getResultList());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
     public void createAddress() {
         AddressReq req = new AddressReq();
-        req.setUserId(1);
+        req.setUserId(41);
         req.setAddressDescription("浙江大学紫金港校区");
-        req.setPhoneNumber(188889999L);
+        req.setPhoneNumber(18883389999L);
+        try {
+            BaseRes res = addressService.createAddress(req);
+            System.out.println(res.getResultMsg());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
+    public void createAddress2() {
+        AddressReq req = new AddressReq();
+        req.setUserId(41);
+        req.setAddressDescription("sadsasadsad");
+        req.setPhoneNumber(18883389999L);
+        try {
+            BaseRes res = addressService.createAddress(req);
+            System.out.println(res.getResultMsg());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
+    public void createAddress3() {
+        AddressReq req = new AddressReq();
+        req.setAddressDescription("浙江大学紫金港校区");
+        req.setPhoneNumber(18883389999L);
         try {
             BaseRes res = addressService.createAddress(req);
             System.out.println(res.getResultMsg());
@@ -56,8 +94,20 @@ public class AddressServiceImplTest {
     @Test
     public void deleteAddress() {
         AddressReq req = new AddressReq();
-        req.setUserId(1);
-        req.setId(2);
+        req.setUserId(41);
+        req.setId(1);
+        try {
+            BaseRes res = addressService.deleteAddress(req);
+            System.out.println(res.getResultMsg());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
+    public void deleteAddress2() {
+        AddressReq req = new AddressReq();
+        req.setId(1);
         try {
             BaseRes res = addressService.deleteAddress(req);
             System.out.println(res.getResultMsg());
@@ -69,8 +119,21 @@ public class AddressServiceImplTest {
     @Test
     public void updateDefaultAddress() {
         AddressReq req = new AddressReq();
-        req.setId(3);
-        req.setUserId(1);
+        req.setId(2);
+        req.setUserId(41);
+        try {
+            BaseRes res = addressService.updateDefaultAddress(req);
+            System.out.println(res.getResultMsg());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
+    public void updateDefaultAddress2() {
+        AddressReq req = new AddressReq();
+        req.setId(2);
+        req.setUserId(41);
         try {
             BaseRes res = addressService.updateDefaultAddress(req);
             System.out.println(res.getResultMsg());
@@ -82,8 +145,8 @@ public class AddressServiceImplTest {
     @Test
     public void updateAddress() {
         AddressReq req = new AddressReq();
-        req.setId(3);
-        req.setPhoneNumber(1999999L);
+        req.setId(1);
+        req.setPhoneNumber(17865788L);
         req.setAddressDescription("浙江小学");
         try {
             BaseRes res = addressService.updateAddress(req);
@@ -96,7 +159,8 @@ public class AddressServiceImplTest {
     @Test
     public void getAddress() {
         AddressReq req = new AddressReq();
-        req.setId(4);
+        req.setId(1);
+        req.setUserId(1);
         try {
             ObjectRes<AddressVO> res = addressService.getAddress(req);
             System.out.println(res.getResultObj());

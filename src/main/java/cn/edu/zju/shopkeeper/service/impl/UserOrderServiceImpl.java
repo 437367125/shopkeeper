@@ -288,7 +288,9 @@ public class UserOrderServiceImpl implements UserOrderService {
             User userInDatabase = userMapper.getUserById(userOrder.getUserId());
             userOrderVO.setPhoneNumber(userInDatabase.getPhoneNumber());
             userOrderVO.setNickname(userInDatabase.getNickname());
-
+            //加入付款的银行卡号
+            Bankcard bankcardInDatabase = bankcardMapper.getBankcardById(userOrder.getBankcardId());
+            userOrderVO.setBankcardNumber(bankcardInDatabase.getBankcardNumber());
 
             userOrderVO.setCommodityList(commodityVOS);
             res.setResultObj(userOrderVO);

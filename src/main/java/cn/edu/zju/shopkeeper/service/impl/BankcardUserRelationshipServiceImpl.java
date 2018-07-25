@@ -149,7 +149,9 @@ public class BankcardUserRelationshipServiceImpl implements BankcardUserRelation
             if (CollectionUtils.isNotEmpty(list)) {
                 for (BankcardUserRelationship b : list) {
                     Bankcard bankcard = bankcardMapper.getBankcardById(b.getBankcardId());
-                    bankcardVOS.add(DozerBeanUtil.map(bankcard, BankcardVO.class));
+                    BankcardVO bankcardVO = DozerBeanUtil.map(bankcard, BankcardVO.class);
+                    bankcardVO.setRelationshipId(b.getId());
+                    bankcardVOS.add(bankcardVO);
                 }
             }
             res.setResultList(bankcardVOS);

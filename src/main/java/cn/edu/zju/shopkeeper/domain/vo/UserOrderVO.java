@@ -41,6 +41,10 @@ public class UserOrderVO {
      */
     private Integer bankcardId;
     /**
+     * 银行卡号
+     */
+    private Long bankcardNumber;
+    /**
      * 订单类别（0为无需配送，1为需要配送）
      */
     private Integer type;
@@ -217,6 +221,14 @@ public class UserOrderVO {
         this.nickname = nickname;
     }
 
+    public Long getBankcardNumber() {
+        return bankcardNumber;
+    }
+
+    public void setBankcardNumber(Long bankcardNumber) {
+        this.bankcardNumber = bankcardNumber;
+    }
+
     @Override
     public String toString() {
         return "UserOrderVO{" +
@@ -227,6 +239,7 @@ public class UserOrderVO {
                 ", totalNum=" + totalNum +
                 ", totalPrice=" + totalPrice +
                 ", bankcardId=" + bankcardId +
+                ", bankcardNumber=" + bankcardNumber +
                 ", type=" + type +
                 ", addressId=" + addressId +
                 ", status=" + status +

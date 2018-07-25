@@ -106,7 +106,7 @@ public class UserOrderController extends BaseController {
 
     @ApiOperation(value = "卖家确认发货", response = JSONObject.class)
     @ApiImplicitParam(name = "userOrderId", value = "订单主键", required = true, paramType = "query")
-    @RequestMapping(value = "/delivery", method = RequestMethod.PUT)
+    @RequestMapping(value = "/delivery", method = RequestMethod.GET)
     @SellerLoginRequired
     public JSONObject updateDelivery(@RequestParam Integer userOrderId) {
         JSONObject jsonObject = new JSONObject();

@@ -23,6 +23,10 @@ public class BankcardVO {
      * 余额
      */
     private Double balance;
+    /**
+     * 关系表主键
+     */
+    private Integer relationshipId;
 
     public Integer getId() {
         return id;
@@ -56,6 +60,14 @@ public class BankcardVO {
         this.balance = balance;
     }
 
+    public Integer getRelationshipId() {
+        return relationshipId;
+    }
+
+    public void setRelationshipId(Integer relationshipId) {
+        this.relationshipId = relationshipId;
+    }
+
     @Override
     public String toString() {
         return "BankcardVO{" +
@@ -63,6 +75,7 @@ public class BankcardVO {
                 ", bankcardNumber=" + bankcardNumber +
                 ", bankName='" + bankName + '\'' +
                 ", balance=" + balance +
+                ", relationshipId=" + relationshipId +
                 '}';
     }
 }

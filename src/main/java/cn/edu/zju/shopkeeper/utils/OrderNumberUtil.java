@@ -25,6 +25,6 @@ public class OrderNumberUtil {
         // 获取5位随机数
         int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;
 
-        return Long.parseLong(rannum + str);
+        return Long.parseLong(str + rannum);
     }
 }

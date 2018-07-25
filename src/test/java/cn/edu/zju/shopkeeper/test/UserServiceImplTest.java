@@ -31,11 +31,28 @@ public class UserServiceImplTest {
     @Test
     public void createUser() {
         UserReq req = new UserReq();
-        req.setUsername("mwb");
-        req.setPhoneNumber(199999999L);
+        req.setUsername("test1");
+        req.setPhoneNumber(188777666L);
         req.setNickname("高手");
         req.setType(ShopkeeperConstant.SELLER);
         req.setPassword("123");
+        req.setEmail("a@zju.edu.cn");
+        try {
+            BaseRes res = userService.createUser(req);
+            System.out.println(res.getResultMsg());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
+    public void createUser2() {
+        UserReq req = new UserReq();
+        req.setPhoneNumber(188777666L);
+        req.setNickname("高手");
+        req.setType(ShopkeeperConstant.SELLER);
+        req.setPassword("123");
+        req.setEmail("a@zju.edu.cn");
         try {
             BaseRes res = userService.createUser(req);
             System.out.println(res.getResultMsg());
@@ -47,9 +64,23 @@ public class UserServiceImplTest {
     @Test
     public void updateUser() {
         UserReq req = new UserReq();
-        req.setPhoneNumber(199999999L);
+        req.setPhoneNumber(123456789876L);
         req.setNickname("咸鱼");
         req.setId(1);
+        req.setEmail("aaa@zju.edu.cn");
+        try {
+            BaseRes res = userService.updateUser(req);
+            System.out.println(res.getResultMsg());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
+    public void updateUser2() {
+        UserReq req = new UserReq();
+        req.setPhoneNumber(123456789876L);
+        req.setNickname("咸鱼");
         req.setEmail("aaa@zju.edu.cn");
         try {
             BaseRes res = userService.updateUser(req);
@@ -64,6 +95,7 @@ public class UserServiceImplTest {
         UserReq req = new UserReq();
         req.setId(1);
         req.setPassword("111");
+        req.setOldPassword("123");
         try {
             BaseRes res = userService.updatePassword(req);
             System.out.println(res.getResultMsg());
@@ -73,7 +105,20 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void getUser() {
+    public void updatePassword2() {
+        UserReq req = new UserReq();
+        req.setId(1);
+        req.setPassword("111");
+        try {
+            BaseRes res = userService.updatePassword(req);
+            System.out.println(res.getResultMsg());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
+    public void getUser2() {
         UserReq req = new UserReq();
         req.setId(1);
         try {
@@ -85,10 +130,34 @@ public class UserServiceImplTest {
     }
 
     @Test
+    public void getUser() {
+        UserReq req = new UserReq();
+        try {
+            ObjectRes<UserVO> res = userService.getUser(req);
+            System.out.println(res.getResultObj());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
     public void comparePassword() {
         UserReq req = new UserReq();
-        req.setUsername("wzj");
+        req.setUsername("test1");
         req.setLoginMethod(ShopkeeperConstant.USERNAME_LOGIN);
+        req.setPassword("111");
+        try {
+            BaseRes res = userService.comparePassword(req);
+            System.out.println(res.getResultMsg());
+        } catch (Exception e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test
+    public void comparePassword2() {
+        UserReq req = new UserReq();
+        req.setUsername("test1");
         req.setPassword("111");
         try {
             BaseRes res = userService.comparePassword(req);

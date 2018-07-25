@@ -88,7 +88,7 @@ public class CommodityServiceImplTest {
     @Test
     public void updateCommodity() {
         CommodityReq req = new CommodityReq();
-        req.setId(3);
+        req.setId(1);
         req.setCommodityName("饼干");
         req.setDescription("阿斯顿撒多");
         req.setCreater("wzj");
