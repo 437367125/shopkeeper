@@ -1,0 +1,54 @@
+2018-07-24 16:09:38,511 - HV000001: Hibernate Validator 6.0.10.Final
+2018-07-24 16:09:39,158 - Starting BankApplication on wangzejiedeMacBook-Pro.local with PID 2306 (started by wzj in /Users/wzj/大学资料/项目实训/bank)
+2018-07-24 16:09:39,160 - No active profile set, falling back to default profiles: default
+2018-07-24 16:09:39,269 - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5c86dbc5: startup date [Tue Jul 24 16:09:39 CST 2018]; root of context hierarchy
+2018-07-24 16:09:41,562 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$7b3c9503] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-07-24 16:09:42,077 - Tomcat initialized with port(s): 9091 (http)
+2018-07-24 16:09:42,258 - Root WebApplicationContext: initialization completed in 2994 ms
+2018-07-24 16:09:42,496 - Servlet dispatcherServlet mapped to [/]
+2018-07-24 16:09:42,502 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-24 16:09:42,503 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-24 16:09:42,503 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-24 16:09:42,503 - Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-24 16:09:43,462 - Mapped "{[],methods=[GET]}" onto public java.lang.Object cn.edu.zju.bank.controller.BankcardController.index()
+2018-07-24 16:09:43,464 - Mapped "{[/info],methods=[POST]}" onto public java.lang.Object cn.edu.zju.bank.controller.BankcardController.getInfo(java.lang.String,java.lang.String)
+2018-07-24 16:09:43,464 - Mapped "{[/card],methods=[GET]}" onto public java.lang.Object cn.edu.zju.bank.controller.BankcardController.getNewCard()
+2018-07-24 16:09:43,464 - Mapped "{[/card],methods=[POST]}" onto public java.lang.Object cn.edu.zju.bank.controller.BankcardController.createNewCard(java.lang.String)
+2018-07-24 16:09:43,471 - Mapped "{[/swagger-resources/configuration/ui]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.UiConfiguration> springfox.documentation.swagger.web.ApiResourceController.uiConfiguration()
+2018-07-24 16:09:43,472 - Mapped "{[/swagger-resources/configuration/security]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.SecurityConfiguration> springfox.documentation.swagger.web.ApiResourceController.securityConfiguration()
+2018-07-24 16:09:43,473 - Mapped "{[/swagger-resources]}" onto public org.springframework.http.ResponseEntity<java.util.List<springfox.documentation.swagger.web.SwaggerResource>> springfox.documentation.swagger.web.ApiResourceController.swaggerResources()
+2018-07-24 16:09:43,486 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-07-24 16:09:43,487 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-07-24 16:09:43,662 - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2018-07-24 16:09:43,873 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-24 16:09:44,055 - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5c86dbc5: startup date [Tue Jul 24 16:09:39 CST 2018]; root of context hierarchy
+2018-07-24 16:09:44,159 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-24 16:09:44,160 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-24 16:09:44,262 - [THYMELEAF][main] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2018-07-24 16:09:44,314 - Adding welcome page template: index
+2018-07-24 16:09:44,580 - Registering beans for JMX exposure on startup
+2018-07-24 16:09:44,585 - Bean with name 'dataSource' has been autodetected for JMX exposure
+2018-07-24 16:09:44,592 - Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2018-07-24 16:09:44,600 - Starting beans in phase 2147483647
+2018-07-24 16:09:44,600 - Context refreshed
+2018-07-24 16:09:44,635 - Found 1 custom documentation plugin(s)
+2018-07-24 16:09:44,685 - Scanning for api listing references
+2018-07-24 16:09:44,898 - Tomcat started on port(s): 9091 (http) with context path '/bank'
+2018-07-24 16:09:44,909 - Started BankApplication in 6.608 seconds (JVM running for 7.37)
+2018-07-24 16:10:00,988 - FrameworkServlet 'dispatcherServlet': initialization started
+2018-07-24 16:10:01,016 - FrameworkServlet 'dispatcherServlet': initialization completed in 28 ms
+2018-07-24 16:10:06,298 - invoke BankcardServiceImpl createBankcard, req:BankcardReq{id=null, userId=null, bankcardNumber=6666532419806215, password='123'}
+2018-07-24 16:10:06,307 - Trying to find Dozer configuration file: dozer.properties
+2018-07-24 16:10:06,309 - Dozer configuration file not found: dozer.properties.  Using defaults for all Dozer global properties.
+2018-07-24 16:10:06,313 - Initializing Dozer. Version: 5.5.0, Thread Name: http-nio-9091-exec-9
+2018-07-24 16:10:06,317 - Dozer JMX MBean [org.dozer.jmx:type=DozerStatisticsController] auto registered with the Platform MBean Server
+2018-07-24 16:10:06,318 - Dozer JMX MBean [org.dozer.jmx:type=DozerAdminController] auto registered with the Platform MBean Server
+2018-07-24 16:10:06,318 - Initializing a new instance of dozer bean mapper.
+2018-07-24 16:10:06,444 - HikariPool-1 - Starting...
+2018-07-24 16:10:07,211 - HikariPool-1 - Start completed.
+2018-07-24 16:10:16,918 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5c86dbc5: startup date [Tue Jul 24 16:09:39 CST 2018]; root of context hierarchy
+2018-07-24 16:10:16,921 - Stopping beans in phase 2147483647
+2018-07-24 16:10:16,923 - Unregistering JMX-exposed beans on shutdown
+2018-07-24 16:10:16,926 - Unregistering JMX-exposed beans
+2018-07-24 16:10:16,932 - HikariPool-1 - Shutdown initiated...
+2018-07-24 16:10:16,949 - HikariPool-1 - Shutdown completed.

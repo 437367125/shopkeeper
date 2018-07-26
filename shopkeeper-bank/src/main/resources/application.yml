@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://120.79.132.224:3306/shopkeeper?useSSL=false
+    username: shopkeeper
+    password: zju123
+  thymeleaf:
+    mode: HTML5
+mybatis:
+  type-aliases-package: cn.edu.zju.bank.domain
+  config-location: classpath:mybatis.xml
+server:
+  port: 9091
+  servlet:
+    context-path: /bank
+  tomcat:
+    uri-encoding: UTF-8
