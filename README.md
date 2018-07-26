@@ -1,3 +1,9 @@
+## 代码结构说明
+- shopkeeper-backend: 后端源代码
+- shopkeeper-buyer: 买家端源代码（Android）
+- shopkeeper-bank: 银行端源代码（前后端整合）
+- shopkeeper-seller: 卖家端源代码（iOS）
+
 ## 后端源代码部署说明
 用maven打包以后，将生成的war包上传到服务器，默认包名为shopkeeper-0.0.1-SNAPSHOT.war
 
