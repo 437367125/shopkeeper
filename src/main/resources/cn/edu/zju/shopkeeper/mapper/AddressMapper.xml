@@ -55,4 +55,11 @@
             </if>
         </where>
     </select>
+    <select id="getDefaultAddress" resultType="Address">
+        SELECT *
+        FROM address
+        WHERE user_id = #{userId}
+              AND type = 1
+              AND state = 1
+    </select>
 </mapper>

@@ -57,6 +57,14 @@ public class UserOrderReq {
      * 订单的商品列表
      */
     private List<OrderCommodityRelationshipReq> commodityList;
+    /**
+     * 商品主键
+     */
+    private Integer commodityId;
+    /**
+     * 商品数量
+     */
+    private Integer count;
 
     public Integer getId() {
         return id;
@@ -154,6 +162,22 @@ public class UserOrderReq {
         this.password = password;
     }
 
+    public Integer getCommodityId() {
+        return commodityId;
+    }
+
+    public void setCommodityId(Integer commodityId) {
+        this.commodityId = commodityId;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
     @Override
     public String toString() {
         return "UserOrderReq{" +
@@ -169,6 +193,8 @@ public class UserOrderReq {
                 ", status=" + status +
                 ", state=" + state +
                 ", commodityList=" + commodityList +
+                ", commodityId=" + commodityId +
+                ", count=" + count +
                 '}';
     }
 }

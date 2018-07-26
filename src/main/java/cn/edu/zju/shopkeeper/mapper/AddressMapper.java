@@ -64,4 +64,12 @@ public interface AddressMapper {
      * @return 地址详情
      */
     Address getAddress(Address address);
+
+    /**
+     * 获取默认地址
+     *
+     * @param userId
+     * @return
+     */
+    Address getDefaultAddress(@Param("userId") Integer userId);
 }

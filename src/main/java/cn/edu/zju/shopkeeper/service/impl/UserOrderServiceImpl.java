@@ -70,24 +70,19 @@ public class UserOrderServiceImpl implements UserOrderService {
         logger.info("invoke UserOrderServiceImpl createOrder, req:{}", req);
         //参数校验
         if (req.getUserId() == null || req.getType() == null ||
-                req.getBankcardId() == null || CollectionUtils.isEmpty(req.getCommodityList()) ||
-                (ShopkeeperConstant.NEED_DELIVERY.equals(req.getType()) && req.getAddressId() == null)) {
+                req.getBankcardId() == null) {
             logger.error("UserOrderServiceImpl createOrder missing param, req:{}", req);
             throw new ShopkeeperException(ResultEnum.MISSING_PARAM);
         }
         BaseRes res = new BaseRes();
         //首先校验商品库存，校验通过后获取商品的列表，便于接下来的库存扣除
-        List<Commodity> commodities = checkInventory(req.getCommodityList());
+        List<Commodity> commodities = checkInventory(req.getCommodityId(), req.getCount());
         if (commodities == null) {
             throw new ShopkeeperException(ResultEnum.INVENTORY_SHORTAGE);
         }
         //计算商品总额、总数
-        Double totalPrice = 0.0;
-        Integer totalNum = 0;
-        for (int i = 0; i < commodities.size(); i++) {
-            totalPrice += commodities.get(i).getPrice() * req.getCommodityList().get(i).getCount();
-            totalNum += req.getCommodityList().get(i).getCount();
-        }
+        Double totalPrice = commodities.get(0).getPrice() * req.getCount();
+        Integer totalNum = req.getCount();
         req.setTotalNum(totalNum);
         req.setTotalPrice(totalPrice);
         //判断当前是否可以免密支付
@@ -102,7 +97,7 @@ public class UserOrderServiceImpl implements UserOrderService {
         Integer userOrderId = createNewOrder(req);
         //创建订单-商品关系
         req.setId(userOrderId);
-        createOrderCommodityRelationship(req, commodities);
+        createOrderCommodityRelationship(userOrderId, req.getCount(), commodities);
         res.setResultCode(ResultEnum.SUCCESS.getCode());
         res.setResultMsg(ResultEnum.SUCCESS.getMsg());
         return res;
@@ -463,20 +458,19 @@ public class UserOrderServiceImpl implements UserOrderService {
     /**
      * 校验库存
      *
-     * @param list
+     * @param commodityId
+     * @param count
      * @return
      * @throws ShopkeeperException
      */
-    private List<Commodity> checkInventory(List<OrderCommodityRelationshipReq> list) throws ShopkeeperException {
+    private List<Commodity> checkInventory(Integer commodityId, Integer count) throws ShopkeeperException {
         List<Commodity> commodities = new ArrayList<>();
         try {
-            for (OrderCommodityRelationshipReq o : list) {
-                Commodity commodity = commodityMapper.getCommodity(o.getCommodityId());
-                if (commodity.getInventory() < o.getCount()) {
-                    return null;
-                }
-                commodities.add(commodity);
+            Commodity commodity = commodityMapper.getCommodity(commodityId);
+            if (commodity.getInventory() < count) {
+                return null;
             }
+            commodities.add(commodity);
         } catch (Exception e) {
             logger.error("UserOrderServiceImpl checkInventory error:{}", ExceptionUtils.getStackTrace(e));
             throw new ShopkeeperException(ResultEnum.DATA_QUERY_FAIL);
@@ -528,11 +522,13 @@ public class UserOrderServiceImpl implements UserOrderService {
      */
     private Integer createNewOrder(UserOrderReq req) throws ShopkeeperException {
         Date date = new Date();
+        Address defaultAddress = addressMapper.getDefaultAddress(req.getUserId());
         UserOrder entity = DozerBeanUtil.map(req, UserOrder.class);
         entity.setOrderNumber(OrderNumberUtil.getRandomFileName());
         entity.setCreateTime(date);
         entity.setPayTime(date);
         entity.setState(ShopkeeperConstant.VALID);
+        entity.setAddressId(defaultAddress.getId());
         if (ShopkeeperConstant.NOT_NEED_DELIVERY.equals(req.getType())) {
             //无需发货，则订单状态为已完成
             entity.setCompleteTime(date);
@@ -553,26 +549,29 @@ public class UserOrderServiceImpl implements UserOrderService {
     /**
      * 创建订单-商品关联关系
      *
-     * @param req
+     * @param
      * @throws ShopkeeperException
      */
-    private void createOrderCommodityRelationship(UserOrderReq req, List<Commodity> commodities) throws ShopkeeperException {
-        List<OrderCommodityRelationship> list = DozerBeanUtil.mapList(req.getCommodityList(), OrderCommodityRelationship.class);
-        Integer userOrderId = req.getId();
+    private void createOrderCommodityRelationship(Integer userOrderId, Integer count,List<Commodity> commodities) throws ShopkeeperException {
+//        List<OrderCommodityRelationship> list = DozerBeanUtil.mapList(req.getCommodityList(), OrderCommodityRelationship.class);
+        OrderCommodityRelationship relationship = new OrderCommodityRelationship();
+        relationship.setOrderId(userOrderId);
+        relationship.setCommodityId(commodities.get(0).getId());
+        relationship.setCount(count);
         try {
-            for (OrderCommodityRelationship o : list) {
-
-                o.setOrderId(userOrderId);
-            }
-            for (int i = 0; i < list.size(); i++) {
-                Integer inventory = commodities.get(i).getInventory() - list.get(i).getCount();
-                list.get(i).setOrderId(userOrderId);
+//            for (OrderCommodityRelationship o : list) {
+//
+//                o.setOrderId(userOrderId);
+//            }
+//            for (int i = 0; i < list.size(); i++) {
+                Integer inventory = commodities.get(0).getInventory() - count;
+//                list.get(i).setOrderId(userOrderId);
                 //创建订单-商品关联
-                orderCommodityRelationshipMapper.createOrderCommodityRelationship(list.get(i));
+                orderCommodityRelationshipMapper.createOrderCommodityRelationship(relationship);
                 //更新商品库存
-                commodities.get(i).setInventory(inventory);
-                commodityMapper.updateInventory(commodities.get(i));
-            }
+                commodities.get(0).setInventory(inventory);
+                commodityMapper.updateInventory(commodities.get(0));
+//            }
         } catch (Exception e) {
             logger.error("UserOrderServiceImpl createOrderCommodityRelationship error:{}", ExceptionUtils.getStackTrace(e));
             throw new ShopkeeperException(ResultEnum.DATA_INSERT_FAIL);

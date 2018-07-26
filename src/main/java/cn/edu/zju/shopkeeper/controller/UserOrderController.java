@@ -9,6 +9,7 @@ import cn.edu.zju.shopkeeper.domain.res.BaseRes;
 import cn.edu.zju.shopkeeper.domain.res.ListRes;
 import cn.edu.zju.shopkeeper.domain.res.ObjectRes;
 import cn.edu.zju.shopkeeper.domain.vo.UserOrderVO;
+import cn.edu.zju.shopkeeper.enums.ResultEnum;
 import cn.edu.zju.shopkeeper.exception.ShopkeeperException;
 import cn.edu.zju.shopkeeper.service.UserOrderService;
 import com.alibaba.fastjson.JSONObject;
@@ -73,7 +74,8 @@ public class UserOrderController extends BaseController {
             @ApiImplicitParam(name = "bankcardId", value = "银行卡主键", required = true, paramType = "query"),
             @ApiImplicitParam(name = "bankcardPassword", value = "银行卡密码（第一次不用输入，第二次请求再输入）", paramType = "query"),
             @ApiImplicitParam(name = "addressId", value = "地址主键", paramType = "query"),
-            @ApiImplicitParam(name = "list", value = "商品列表", required = true, paramType = "body")
+            @ApiImplicitParam(name = "commodityId", value = "商品主键", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "count", value = "商品数量", required = true, paramType = "query")
     })
     @RequestMapping(value = "", method = RequestMethod.POST)
     @BuyerLoginRequired
@@ -82,7 +84,8 @@ public class UserOrderController extends BaseController {
                                   @RequestParam Integer bankcardId,
                                   @RequestParam(required = false) Integer bankcardPassword,
                                   @RequestParam(required = false) Integer addressId,
-                                  @RequestBody List<OrderCommodityRelationshipReq> list) {
+                                  @RequestParam String commodityId,
+                                  @RequestParam String count) {
         JSONObject jsonObject = new JSONObject();
         BaseRes res = new BaseRes();
         UserOrderReq req = new UserOrderReq();
@@ -90,14 +93,19 @@ public class UserOrderController extends BaseController {
         req.setBankcardId(bankcardId);
         req.setPassword(bankcardPassword);
         req.setAddressId(addressId);
-        req.setCommodityList(list);
         try {
+            req.setCommodityId(Integer.parseInt(commodityId));
+            req.setCount(Integer.parseInt(count));
             req.setUserId(getUser(token).getId());
             res = userOrderService.createOrder(req);
         } catch (ShopkeeperException e) {
             logger.error("UserOrderController createOrder error:{}", ExceptionUtils.getStackTrace(e));
             res.setResultCode(e.getErrorCode());
             res.setResultMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error("UserOrderController createOrder error:{}", ExceptionUtils.getStackTrace(e));
+            res.setResultCode(ResultEnum.SYSTEM_ERROR.getCode());
+            res.setResultMsg(ResultEnum.SYSTEM_ERROR.getMsg());
         }
         jsonObject.put(ShopkeeperConstant.RESULT_CODE, res.getResultCode());
         jsonObject.put(ShopkeeperConstant.RESULT_MSG, res.getResultMsg());
